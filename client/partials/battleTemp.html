@@ -1,0 +1,229 @@
+<!--    <div class="battleWrapper">-->
+<!--
+        <div id='player1_side'>
+            <div id='player1_window' style="display:block">
+                <h3 style='display:inline;'>Player 1 Name:</h3><input type="text" id="p1name_input" onkeyup="changename('#p1name_input','#player1name', player1, 'Player 1')" maxlength='10'>
+            </div>
+            <br>
+            <h4 style="display:inline;">Pick a pokemon team: </h4>
+            <ol>
+                <li id="player_1_slot1"></li>
+                <li id="player_1_slot2"></li>
+                <li id="player_1_slot3"></li>
+            </ol>
+            
+            <div id='player1_pokemon_list' style="display:block">
+                
+            </div>
+            <div id='player1_fight_menu' class="fightmenu">
+                <button onclick="playeratk(player1, player2)">ATTACK!</button>
+            </div>
+        </div>
+-->
+<!--        Render battle here-->
+        <div class="battlewindow">
+            <div class="pokemon1img"></div>
+            <div class="pokemon2img"></div>
+            <div id="battleinfo1" class="battleinfo">
+                <h3 id='player1name'>Player 1</h3>
+                <p>HP: <span id="current1hp"></span></p>
+            </div>
+            <div id="battleinfo2" class="battleinfo">
+                <h3 id='player2name'>Player 2</h3>
+                <p>HP: <span id="current2hp"></span></p>
+            </div>
+        </div>
+<!-- end of Render Battle -->
+<!-- Player 2 side
+        <div id='player2_side'>
+            <div id='player2_window' style="display:block">
+                <h3 style='display:inline;'>Player 2 Name:</h3><input type="text" id="p2name_input" onkeyup="changename('#p2name_input','#player2name', player2, 'Player 2')" maxlength='10'>
+            </div>
+            <br>
+            <h4 style="display:inline;">Pick a pokemon team: </h4>
+
+            <div id='player2_pokemon_list' style="display:block">
+            
+            </div>
+            <div id='player2_fight_menu' class="fightmenu">
+                <button onclick="playeratk(player2,player1)">ATTACK!</button>
+            </div>
+        </div>
+-->
+        <div class="statusbar">
+            <div><textarea  id="status" rows="3" disabled></textarea></div>
+        </div>
+<!--
+        <div id="pokemonteam1">
+            <div id="p1_poke_slot1" class="pokemondata">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td id="player_1_slot1"></td>
+                        </tr>
+                        <tr>
+                            <td>HP</td>
+                            <td id='p1_s1_hp'></td>
+                        </tr>
+                        <tr>
+                            <td>ATK</td>
+                            <td id='p1_s1_atk'></td>
+                        </tr>
+                        <tr>
+                            <td>DEF</td>
+                            <td id='p1_s1_def'></td>
+                        </tr>
+                        <tr>
+                            <td>SPD</td>
+                            <td id='p1_s1_spd'></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="p1_s1_img"></div>
+            </div>
+            <div id="p1_poke_slot2" class="pokemondata">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td id="player_1_slot2"></td>
+                        </tr>
+                        <tr>
+                            <td>HP</td>
+                            <td id='p1_s2_hp'></td>
+                        </tr>
+                        <tr>
+                            <td>ATK</td>
+                            <td id='p1_s2_atk'></td>
+                        </tr>
+                        <tr>
+                            <td>DEF</td>
+                            <td id='p1_s2_def'></td>
+                        </tr>
+                        <tr>
+                            <td>SPD</td>
+                            <td id='p1_s2_spd'></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="p1_s2_img"></div>
+            </div>
+            <div id="p1_poke_slot3" class="pokemondata">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td id="player_1_slot3"></td>
+                        </tr>
+                        <tr>
+                            <td>HP</td>
+                            <td id='p1_s3_hp'></td>
+                        </tr>
+                        <tr>
+                            <td>ATK</td>
+                            <td id='p1_s3_atk'></td>
+                        </tr>
+                        <tr>
+                            <td>DEF</td>
+                            <td id='p1_s3_def'></td>
+                        </tr>
+                        <tr>
+                            <td>SPD</td>
+                            <td id='p1_s3_spd'></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="p1_s3_img"></div>
+            </div>
+        </div>
+    
+        <div id="pokemonteam2">
+            <div id="p2_poke_slot1" class="pokemondata">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td id="player_2_slot1"></td>
+                        </tr>
+                        <tr>
+                            <td>HP</td>
+                            <td id='p2_s1_hp'></td>
+                        </tr>
+                        <tr>
+                            <td>ATK</td>
+                            <td id='p2_s1_atk'></td>
+                        </tr>
+                        <tr>
+                            <td>DEF</td>
+                            <td id='p2_s1_def'></td>
+                        </tr>
+                        <tr>
+                            <td>SPD</td>
+                            <td id='p2_s1_spd'></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="p2_s1_img"></div>
+            </div>
+            <div id="p2_poke_slot2" class="pokemondata">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td id="player_2_slot2"></td>
+                        </tr>
+                        <tr>
+                            <td>HP</td>
+                            <td id='p2_s2_hp'></td>
+                        </tr>
+                        <tr>
+                            <td>ATK</td>
+                            <td id='p2_s2_atk'></td>
+                        </tr>
+                        <tr>
+                            <td>DEF</td>
+                            <td id='p2_s2_def'></td>
+                        </tr>
+                        <tr>
+                            <td>SPD</td>
+                            <td id='p2_s2_spd'></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="p2_s2_img"></div>
+            </div>
+            <div id="p2_poke_slot3" class="pokemondata">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td id="player_2_slot3"></td>
+                        </tr>
+                        <tr>
+                            <td>HP</td>
+                            <td id='p2_s3_hp'></td>
+                        </tr>
+                        <tr>
+                            <td>ATK</td>
+                            <td id='p2_s3_atk'></td>
+                        </tr>
+                        <tr>
+                            <td>DEF</td>
+                            <td id='p2_s3_def'></td>
+                        </tr>
+                        <tr>
+                            <td>SPD</td>
+                            <td id='p2_s3_spd'></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="p2_s3_img"></div>
+            </div>
+        </div>
+        <div>
+            <audio controls><source src="assets/music/music/music.mp3" type="audio/mpeg"></audio>
+        </div>
+-->
+<!--    </div>-->
+    <script src="main.js"></script>

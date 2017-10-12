@@ -1,0 +1,73 @@
+div.login {
+    width: 180px;
+    height: 160px;
+    padding: 30px;
+    margin-left: 270px;
+    text-align: center;
+}
+
+input.login {
+    width: 140px;
+    margin-top: 15px;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+button.login {
+    margin-top: 15px;
+    padding: 4px 8px;
+    float: right;
+    border: 2px solid black;
+    border-radius: 5px;
+    box-shadow: 3px 3px black;
+}
+button.login:active {
+    margin-top: 15px;
+    padding: 4px 8px;
+    float: right;
+    border: 2px solid black;
+    border-radius: 5px;
+    box-shadow: 1px 1px black;
+    transform: translateY(2px);
+}
+/*
+div.pokemonCard {
+    width: 180px;
+    height: 300px;
+    border: 8px solid yellow;
+    background: light-blue;
+    display: inline-block;
+    margin: 8px;
+    border-radius: 20px;
+    padding: 10px;
+    text-align: center;
+}
+div.pokemonCard table {
+    text-align: left;
+}
+*/
+
+table td {
+    padding: 2px;
+}
+
+
+/*
+div.pokemonCard .header {
+    background: white;
+    border-radius: 5px;
+    margin-left: 15px;
+    text-align: center;
+}
+*/
+
+audio {
+    display:hidden;
+}
+
+div.TitleWrapper {
+    background-color: #3b91f7;
+    vertical-align: top;
+    padding: 50px;
+}

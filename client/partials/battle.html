@@ -1,0 +1,25 @@
+<div class="battleWrapper">
+    <div class="battleWindow">
+        <div class="pokemon1img"><img src='./assets/pics/back/{{user.pokemons[0].id}}.png' height='280'></div>
+        <div class="pokemon2img"><img src='./assets/pics/front/{{enemyPokemonLow.id}}.png' height='150'></div>
+        <div id="battleinfo1" class="battleinfo">
+            <h3 id='player1name'>{{user.pokemons[0].name}}</h3>
+            <p>HP: <span id="current1hp">{{user.pokemons[0].currentHP}}</span></p>
+        </div>
+        <div id="battleinfo2" class="battleinfo">
+            <h3 id='player2name'>{{enemyPokemonLow.name}}</h3>
+            <p>HP: <span id="current2hp">{{enemyPokemonLow.currentHP}}</span></p>
+        </div>
+    </div>
+    <div class="statusBar"><textarea id="status" rows="3" disabled></textarea></div>
+</div>
+<div class="battleControls">
+    <div class="nesController">
+        <button class="attackA" type="button" ng-click="attack(1)">A</button>
+        <button class="attackB" type="button" ng-click="attack(1)">B</button>
+    </div>
+</div>
+<div class="cry1"></div>
+<div class="cry2"></div>
+
+<!--<script src="battle.js"></script>-->

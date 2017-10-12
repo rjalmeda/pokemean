@@ -1,0 +1,18 @@
+.login {
+    background-image: url(../assets/pics/bg/TitleLogo.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-top: 15vh;
+    padding-top: 30vh;
+    padding-bottom: 25vh;
+}
+
+.login form {
+    margin-top: 40vh;
+}
+
+
+.splashContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}

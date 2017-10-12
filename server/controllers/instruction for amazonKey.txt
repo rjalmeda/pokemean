@@ -1,0 +1,1 @@
+rename "amazonKey Template.js" to "amazonKey.js" and enter your amazon product api info here.  Make sure your amazon key is setup to do product api calls.

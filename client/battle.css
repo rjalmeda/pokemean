@@ -1,0 +1,196 @@
+img.pokemonimg {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+}
+div.battleWrapper {
+    width: 600px;
+    padding-top: 35px;
+    padding-left: 12px;
+    vertical-align: top;
+    position: relative;
+}
+statusBar {
+    position: absolute;
+}
+div#player1_side {
+    width:350px;
+/*            border:4px solid green;*/
+    vertical-align: top;
+    display: inline-block;
+}
+div#player1_pokemon_list {
+    width: 340px;
+    height: 300px;
+    display: inline-block;
+/*            border: 3px solid red;*/
+    overflow: scroll;
+    vertical-align: top;
+}
+div#player2_side {
+    width: 350px;
+/*            border:4px solid green;*/
+    vertical-align: top;
+    display: inline-block;
+}
+div#player2_pokemon_list {
+    width: 340px;
+    height: 300px;
+    display: inline-block;
+/*            border: 3px solid blue;*/
+    overflow: scroll;
+    vertical-align: top;
+}
+div.battleWindow {
+    position: relative;
+    background: url(assets/pics/bg/battlebg.png);
+    width: 600px;
+    height: 360px;
+    border: 3px solid black;
+    border-radius: 8px;
+    overflow: hidden;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-top: -12px;
+    margin-left: 2px;
+}
+div.battleControls {
+    width: 600px;
+    margin-left: 13px;
+    margin-top: -20px;
+    height: 180px;
+    background-color:  white;
+    border: 3px solid black;
+    border-radius: 10px;
+    display: none;
+    vertical-align: top;
+}
+div.nesController {
+    background: url(assets/pics/tileset/controller.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    width: 400px;
+    height: 165px;
+    position: relative;
+}
+button.attackA {
+    position: absolute;
+    top: 100px;
+    left: 315px;
+    width: 30px;
+    height: 30px;
+    background: red;
+    border-radius: 15px;
+    border: 2px solid black;
+    box-shadow: 2px 2px darkred;
+}
+
+button.attackA:active {
+    box-shadow: 1px 1px darkred;
+    transform: translateY(2px);
+}
+button.attackB {
+    position: absolute;
+    top: 100px;
+    left: 265px;
+    width: 30px;
+    height: 30px;
+    background: red;
+    border-radius: 15px;
+    border: 2px solid black;
+    box-shadow: 2px 2px darkred;
+}
+
+button.attackB:active {
+    box-shadow: 1px 1px darkred;
+    transform: translateY(2px);
+}
+div.pokemon1img {
+    position: absolute;
+    left: 50px;
+    top: 190px;
+    height: 300px;
+    width: 240px;
+/*    border: 5px solid red;*/
+    background-size: 100%;
+    display: none;
+}
+div.pokemon2img {
+    position:absolute;
+    left: 375px;
+    top: 90px;
+    height: 160px;
+    width: 140px;
+/*    border: 2px solid blue;*/
+    background-size: 100%;
+    display: none;
+}
+div.fightmenu {
+    text-align: center;
+}
+div#pokemonteam1 {
+    background: 3px solid red;
+    display: inline-block;
+    margin-top: 30px;
+}
+div#pokemonteam2 {
+    background: 3px solid blue;
+    display: inline-block;
+    margin-top: 30px;
+    margin-left: 140px;
+}
+div.pokemondata {
+    width: 160px;
+    height: 200px;
+    border: 10px solid yellow;
+    border-radius: 12px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+    padding: 5px;
+
+}
+@font-face {
+    font-family:'Pokemon GB';
+    src: url("assets/fonts/pokefont.ttf")
+}
+div.battleinfo {
+    font-family:'Pokemon GB';
+    font-size: 10pt;
+    width: 180px;
+    height: 70px;
+    background: white;
+    border: 3px solid black;
+    border-radius: 10px;
+    padding: 0px 10px;
+}
+div#battleinfo1 {
+    position: absolute;
+    top: 245px;
+    left: 360px;
+    padding: 6px;
+    display: none;
+}
+div#battleinfo2 {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    padding: 6px;
+    display: none;
+}
+textarea {
+    border: 3px solid black;
+    border-radius: 12px;
+    resize: none;
+    width: 592px;
+    background: white;
+    font-family: 'Pokemon GB';
+    padding: 2px 5px 0px 5px;
+    overflow: hidden;
+}
+div.cry1, div.cry2 {
+    display: none;
+}

@@ -1,0 +1,43 @@
+<div class="splashContainer">
+     <div class="pokemonCard" ng-repeat="pokemon in newpokemons">
+        <div class="header">
+            Lvl {{pokemon.lvl}} - {{pokemon.name}}
+        </div>
+        <div class="pokemonPic">
+            <img src='./assets/pics/front/{{pokemon.id}}.png'>
+        </div>
+        <table>
+            <tr>
+                <td>HP</td>
+                <td>{{pokemon.hp}}</td>
+            </tr>
+            <tr>
+                <td>Attack</td>
+                <td>{{pokemon.atk}}</td>
+            </tr>
+            <tr>
+                <td>Defense</td>
+                <td>{{pokemon.def}}</td>
+            </tr>
+            <tr>
+                <td>Speed</td>
+                <td>{{pokemon.spd}}</td>
+            </tr>
+            <tr>
+                <td>Special Atk</td>
+                <td>{{pokemon.spcAtk}}</td>
+            </tr>
+            <tr>
+                <td>Special Def</td>
+                <td>{{pokemon.spcDef}}</td>
+            </tr>
+        </table>
+        <audio autoplay>
+          <source ng-src="{{pokemon.ogg}}">
+          <source ng-src="{{pokemon.mp3}}">
+        </audio>
+    </div>  
+</div>
+
+<br>
+<a href="#/world" ng-if="loadingComplete">Continue</a> 

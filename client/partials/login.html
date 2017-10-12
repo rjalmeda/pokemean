@@ -1,0 +1,68 @@
+<!--
+<div class="TitleWrapper">
+    <img src="assets/pics/bg/TitleLogo.png" width="700"> <br>
+    <div class="login">
+        <form ng-submit="login()">
+            <input type="text" id="username" class="login" ng-model="user.username"><br>
+            <label for="username">Username</label><br>
+            <input type="password" id="password" class="login" ng-model="user.password"><br>
+            <label for="password">Password</label><br>
+            <button class="login" type="submit">Reg/Login</button>
+        </form>
+    </div>
+</div>
+
+-->
+
+
+<nav class="navbar fixed-top navbar-toggleable-sm bg-faded">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="#">Pokemon</a>
+  <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">World</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Utilities</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Account</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+<section class="login">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <form ng-submit="login()">
+                  <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" ng-model="user.username" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                  </div>
+                  <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" ng-model="user.password" class="form-control" id="password" placeholder="Password">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="test">
+    <button type="button" ng-click="testGapi()">Test Gapi</button>
+    <button type="button" ng-click="loginGoogle()">Google Login</button>
+    <button type="button" ng-click="logoutGoogle()">Google Logout</button>
+    <div class="g-signin2"></div>
+</section>

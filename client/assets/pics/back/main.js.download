@@ -1,0 +1,355 @@
+var game = {
+    'players' : [],
+    'deck' : [],
+    'addPlayer' : function(player){
+        game.players.push(player)
+    },
+    'battle': function(player1,player2){
+        
+    }
+
+};
+function playerConstructor(name){
+    name = {};
+    name.name = name;
+    name.pokemons = [];
+    name.addPokemon = function(pokemon){
+    name.pokemons.push(pokemon);
+  };
+  return name;
+};
+
+player1 = playerConstructor('player1');
+player2 = playerConstructor('player2');
+player1.currentpokemon = {};
+player2.currentpokemon = {};
+
+var pokemon1animation = 'left';
+var animationmoves = 0;
+function animatepokemonright(){
+    while(animationmoves<500){
+        $('div.pokemon1img').animate({left: '+=15px'}, 1000);
+        $('div.pokemon2img').animate({left: '-=7px'}, 1000);
+        animationmoves++;
+        animatepokemonleft();
+    };
+};
+function animatepokemonleft(){
+    while(animationmoves<500){
+        $('div.pokemon1img').animate({left: '-=15px'}, 1000);
+        $('div.pokemon2img').animate({left: '+=7px'}, 1000);
+        animationmoves++;
+        animatepokemonright();
+    }
+        
+};
+
+var player1slot = 1;
+var player2slot = 1;
+var currentp1pokemon = 0;
+var currentp2pokemon = 0;
+
+function player1atk(){
+    console.log('You attack player 2')
+    $('.pokemon1img').animate({left: '-=25px'}, 70);
+    setTimeout($('.pokemon1img').animate({left: '+=25px'},100),120);
+    $('.pokemon2img').animate({left: '+=15px'}, 20);
+    setTimeout($('.pokemon2img').animate({left: '-=15px'},20),30);
+    setTimeout($('.pokemon2img').animate({left: '+=15px'},20),60);
+    setTimeout($('.pokemon2img').animate({left: '-=15px'},20),90);
+    var atk = Math.floor(Math.random()*player1.currentpokemon.atk*.25);
+    console.log(player2.currentpokemon.hp);
+    player2.currentpokemon.hp -= atk;
+    console.log(player2.currentpokemon.hp);
+    $('#current2hp').html(player2.currentpokemon.hp);
+    if (player2.currentpokemon.hp<1&&currentp2pokemon<2){
+        currentp2pokemon += 1;
+        player2.currentpokemon = player2.pokemons[currentp2pokemon];
+        $('#current2hp').html(player2.currentpokemon.hp);
+        pic1url = "<img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+player2.currentpokemon.id+".png height='150'>"
+        $('div.pokemon2img').html(pic1url);
+    };
+    if (player2.currentpokemon.hp<1&&currentp2pokemon==2){
+        console.log('Player 2 loses');
+        picurl = '';
+        healthzero = 0;
+        $('div.pokemon2img').html(picurl);
+        $('#current2hp').html(healthzero);
+        player2.currentpokemon = {};
+    };
+}
+
+function player2atk(){
+    console.log('You attack player 1')
+    $('.pokemon2img').animate({left: '-=25px'}, 70);
+    setTimeout($('.pokemon2img').animate({left: '+=25px'},100),120);
+    $('.pokemon1img').animate({left: '-=15px'}, 20);
+    setTimeout($('.pokemon1img').animate({left: '+=15px'},20),30);
+    setTimeout($('.pokemon1img').animate({left: '-=15px'},20),60);
+    setTimeout($('.pokemon1img').animate({left: '+=15px'},20),90);
+    var atk = Math.floor(Math.random()*player2.currentpokemon.atk*.25);
+    player1.currentpokemon.hp -= atk;
+    $('#current1hp').html(player1.currentpokemon.hp);
+    if (player1.currentpokemon.hp<1&&currentp1pokemon<2){
+        currentp1pokemon += 1;
+        player1.currentpokemon = player1.pokemons[currentp1pokemon];
+        $('#current1hp').html(player1.currentpokemon.hp);
+        pic1url = "<img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/"+player1.currentpokemon.id+".png height='280'>"
+        $('div.pokemon1img').html(pic1url);
+    };
+    if (player1.currentpokemon.hp<1&&currentp1pokemon==2){
+        console.log('Player 1 Loses!');
+        picurl = '';
+        healthzero = 0;
+        $('div.pokemon1img').html(picurl);
+        $('#current1hp').html(healthzero);
+        player1.currentpokemon = {};
+    };
+//    if (player1.currentpokemon.hp<1 && player1slot=2){
+//        console.log('you lose');
+//        
+//    };
+}
+
+//function animatepokemon2right(){
+//        $('div.pokemon2img').animate({left: '+=13px'}, 1000);
+//        animatepokemon2left();
+//};
+//function animatepokemon2left(){
+//        $('div.pokemon2img').animate({left: '-=13px'}, 1000);
+//        animatepokemon2right();
+//};
+
+
+
+
+
+$(document).ready(function(){
+    for (var i = 1; i<651; i++){
+    $("#player1_pokemon_list").append("<img class='pokemonimg' player='1' id="+i+" src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/"+i+".png>");
+    $("#player2_pokemon_list").append("<img class='pokemonimg' player='2' id="+i+" src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/"+i+".png>")};
+    
+//    sample move
+//    $.get("http://pokeapi.co/api/v2/move/20/", function(res){
+//        console.log(res);
+//    });
+//    
+//    sample effect
+//    $.get("http://pokeapi.co/api/v2/contest-effect/24/", function(res){
+//        console.log(res);
+//    });
+
+//          $.get("http://pokeapi.co/api/v1/pokemon/1/", function(res) {
+//            console.log(res);
+//            var html_str = "";
+//            html_str += "<h4>Types</h4>";
+//            html_str += "<ul>";
+//            for(var i = 0; i < res.types.length; i++) {
+//               html_str += "<li>" + res.types[i].name + "</li>";
+//            };
+//            html_str += "</ul>";
+//            $("#bulbasaur").html(html_str);
+//          }, "json");
+//    
+//      $.get("http://pokeapi.co/api/v2/pokemon/3/", function(res) {
+//        var html_str = "";
+//        html_str += "<h4>Types</h4>";
+//        html_str += "<ul>";
+//        for(var i = 0; i < res.types.length; i++) {
+//           html_str += "<li>" + res.types[i].type.name + "</li>";
+//        };
+//        html_str += "</ul>";
+//        html_str += "<h4>Moves<h4><br><ol>";
+//
+//        //sample get move list
+//        for(i=0; i < res.moves.length; i++){
+//            html_str += "<li><a href='"+res.moves[i].move.url+"'>"+ res.moves[i].move.name+"</a></li>";
+//        };
+//        html_str += "</ol>"
+//        $("#venusaur").html(html_str);
+//      }, "json");
+    
+//    animatepokemonright();
+
+});
+
+
+    //sample get move specifics
+//    $.get("http://pokeapi.co/api/v2/move/63/", function(res) {
+//        console.log(res);
+//    }, "json");
+
+    $(document).on('click', 'img', function(){
+        var player_id = $(this).attr('player');
+        $.ajax({
+            "url": "http://pokeapi.co/api/v2/pokemon/"+$(this).attr('id'),
+            "method": "GET",
+            "success": function(data){
+                console.dir(res);
+                if (player_id==='1'){
+                    if (player1slot === 1){
+                        $('#player_1_slot1').html(data.name);
+                        player1slot = 2;
+                        var pic1url = '';
+                        pic1url = "<img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/"+data.id+".png height='280'>"
+                        picsmallurl = "<img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+data.id+".png height='100'>"
+                        $('div.pokemon1img').html(pic1url);
+                        $('div#p1_s1_img').html(picsmallurl);
+                        player1.addPokemon(data);
+                        console.log('------------------------');
+                        console.log(data.name);
+                        console.log('5 - '+data.stats[5].stat.name+' - '+data.stats[5].base_stat);
+                        console.log('4 - '+data.stats[4].stat.name+' - '+data.stats[4].base_stat);
+                        console.log('3 - '+data.stats[3].stat.name+' - '+data.stats[3].base_stat);
+                        console.log('2 - '+data.stats[2].stat.name+' - '+data.stats[2].base_stat);
+                        console.log('1 - '+data.stats[1].stat.name+' - '+data.stats[1].base_stat);
+                        console.log('0 - '+data.stats[0].stat.name+' - '+data.stats[0].base_stat);
+                        console.log('------------------------');
+                        $('#p1_s1_hp').append(data.stats[5].base_stat);
+                        $('#p1_s1_atk').append(data.stats[4].base_stat);
+                        $('#p1_s1_def').append(data.stats[3].base_stat);
+                        $('#p1_s1_spd').append(data.stats[0].base_stat);
+                        player1.pokemons[0].hp = data.stats[5].base_stat;
+                        player1.pokemons[0].atk = data.stats[4].base_stat;
+                        player1.currentpokemon = player1.pokemons[0];
+                        $('#current1hp').html(player1.currentpokemon.hp);
+                    }
+                    else if (player1slot === 2) {
+                        $('#player_1_slot2').html(data.name);
+                        player1.addPokemon(data);
+                        picsmallurl = "<img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+data.id+".png height='100'>"
+                        $('div#p1_s2_img').html(picsmallurl);
+                        player1slot = 3;
+                        console.log('------------------------');
+                        console.log(data.name);
+                        console.log('5 - '+data.stats[5].stat.name+' - '+data.stats[5].base_stat);
+                        console.log('4 - '+data.stats[4].stat.name+' - '+data.stats[4].base_stat);
+                        console.log('3 - '+data.stats[3].stat.name+' - '+data.stats[3].base_stat);
+                        console.log('2 - '+data.stats[2].stat.name+' - '+data.stats[2].base_stat);
+                        console.log('1 - '+data.stats[1].stat.name+' - '+data.stats[1].base_stat);
+                        console.log('0 - '+data.stats[0].stat.name+' - '+data.stats[0].base_stat);
+                        console.log('------------------------');
+                        $('#p1_s2_hp').append(data.stats[5].base_stat);
+                        $('#p1_s2_atk').append(data.stats[4].base_stat);
+                        $('#p1_s2_def').append(data.stats[3].base_stat);
+                        $('#p1_s2_spd').append(data.stats[0].base_stat);
+                        player1.pokemons[1].hp = data.stats[5].base_stat;
+                        player1.pokemons[1].atk = data.stats[4].base_stat;
+                        $('#current2hp').html(player1.currentpokemon.hp);
+                    }
+                    else if (player1slot === 3) {
+                        $('#player_1_slot3').html(data.name);
+                        picsmallurl = "<img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+data.id+".png height='100'>"
+                        $('div#p1_s3_img').html(picsmallurl);
+                        player1.addPokemon(data);
+                        player1slot = 0;
+                        console.log('------------------------');
+                        console.log(data.name);
+                        console.log('5 - '+data.stats[5].stat.name+' - '+data.stats[5].base_stat);
+                        console.log('4 - '+data.stats[4].stat.name+' - '+data.stats[4].base_stat);
+                        console.log('3 - '+data.stats[3].stat.name+' - '+data.stats[3].base_stat);
+                        console.log('2 - '+data.stats[2].stat.name+' - '+data.stats[2].base_stat);
+                        console.log('1 - '+data.stats[1].stat.name+' - '+data.stats[1].base_stat);
+                        console.log('0 - '+data.stats[0].stat.name+' - '+data.stats[0].base_stat);
+                        console.log('------------------------');
+                        $('#p1_s3_hp').append(data.stats[5].base_stat);
+                        $('#p1_s3_atk').append(data.stats[4].base_stat);
+                        $('#p1_s3_def').append(data.stats[3].base_stat);
+                        $('#p1_s3_spd').append(data.stats[0].base_stat);
+                        player1.pokemons[2].hp = data.stats[5].base_stat;
+                        player1.pokemons[2].atk = data.stats[4].base_stat;
+                    }
+                    else {
+                        console.log('reached max pokemon');
+                    }
+                    
+                }
+                else if (player_id==='2'){
+                    if (player2slot === 1){
+                        $('#player_2_slot1').html(data.name);
+                        player2.addPokemon(data);
+                        player2slot = 2;
+                        var pic2url = '';
+                        pic2url = "<img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+data.id+".png height='150'>"
+                        picsmallurl = "<img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+data.id+".png height='100'>"
+                        $('div#p2_s1_img').html(picsmallurl);
+                        $('div.pokemon2img').html(pic2url);
+                        console.log('------------------------');
+                        console.log(data.name);
+                        console.log('5 - '+data.stats[5].stat.name+' - '+data.stats[5].base_stat);
+                        console.log('4 - '+data.stats[4].stat.name+' - '+data.stats[4].base_stat);
+                        console.log('3 - '+data.stats[3].stat.name+' - '+data.stats[3].base_stat);
+                        console.log('2 - '+data.stats[2].stat.name+' - '+data.stats[2].base_stat);
+                        console.log('1 - '+data.stats[1].stat.name+' - '+data.stats[1].base_stat);
+                        console.log('0 - '+data.stats[0].stat.name+' - '+data.stats[0].base_stat);
+                        console.log('------------------------');
+                        $('#p2_s1_hp').append(data.stats[5].base_stat);
+                        $('#p2_s1_atk').append(data.stats[4].base_stat);
+                        $('#p2_s1_def').append(data.stats[3].base_stat);
+                        $('#p2_s1_spd').append(data.stats[0].base_stat);
+                        player2.pokemons[0].hp = data.stats[5].base_stat;
+                        player2.pokemons[0].atk = data.stats[4].base_stat;
+                        player2.currentpokemon = player2.pokemons[0];
+                    }
+                    else if (player2slot === 2) {
+                        $('#player_2_slot2').html(data.name);
+                        player2.addPokemon(data);
+                        picsmallurl = "<img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+data.id+".png height='100'>"
+                        $('div#p2_s2_img').html(picsmallurl);
+                        console.log('------------------------');
+                        console.log(data.name);
+                        console.log('5 - '+data.stats[5].stat.name+' - '+data.stats[5].base_stat);
+                        console.log('4 - '+data.stats[4].stat.name+' - '+data.stats[4].base_stat);
+                        console.log('3 - '+data.stats[3].stat.name+' - '+data.stats[3].base_stat);
+                        console.log('2 - '+data.stats[2].stat.name+' - '+data.stats[2].base_stat);
+                        console.log('1 - '+data.stats[1].stat.name+' - '+data.stats[1].base_stat);
+                        console.log('0 - '+data.stats[0].stat.name+' - '+data.stats[0].base_stat);
+                        console.log('------------------------');
+                        $('#p2_s2_hp').append(data.stats[5].base_stat);
+                        $('#p2_s2_atk').append(data.stats[4].base_stat);
+                        $('#p2_s2_def').append(data.stats[3].base_stat);
+                        $('#p2_s2_spd').append(data.stats[0].base_stat);
+                        player2.pokemons[1].hp = data.stats[5].base_stat;
+                        player2.pokemons[1].atk = data.stats[4].base_stat;
+                        player2slot = 3;
+                    }
+                    else if (player2slot === 3) {
+                        $('#player_2_slot3').html(data.name);
+                        player2.addPokemon(data);
+                        picsmallurl = "<img src=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+data.id+".png height='100'>"
+                        $('div#p2_s3_img').html(picsmallurl);
+                        console.log('------------------------');
+                        console.log(data.name);
+                        console.log('5 - '+data.stats[5].stat.name+' - '+data.stats[5].base_stat);
+                        console.log('4 - '+data.stats[4].stat.name+' - '+data.stats[4].base_stat);
+                        console.log('3 - '+data.stats[3].stat.name+' - '+data.stats[3].base_stat);
+                        console.log('2 - '+data.stats[2].stat.name+' - '+data.stats[2].base_stat);
+                        console.log('1 - '+data.stats[1].stat.name+' - '+data.stats[1].base_stat);
+                        console.log('0 - '+data.stats[0].stat.name+' - '+data.stats[0].base_stat);
+                        console.log('------------------------');
+                        $('#p2_s3_hp').append(data.stats[5].base_stat);
+                        $('#p2_s3_atk').append(data.stats[4].base_stat);
+                        $('#p2_s3_def').append(data.stats[3].base_stat);
+                        $('#p2_s3_spd').append(data.stats[0].base_stat);
+                        player2.pokemons[2].hp = data.stats[5].base_stat;
+                        player2.pokemons[2].atk = data.stats[4].base_stat;
+                        player2slot = 0;
+                    }
+                    else {
+                        console.log('reached max pokemon');
+                    }
+                    
+                }
+                else {
+                    console.log('what happened?')  
+                };
+            }
+        })
+    })
+//example:
+//game.addPlayer(playerConstructor('Joe'));
+//game.addPlayer(playerConstructor('Sarah'));
+//console.log(game);
+// reminder of how to get things using jquery and AJAX!
+
+

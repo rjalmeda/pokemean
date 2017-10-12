@@ -1,0 +1,141 @@
+
+<div class="gridContainer">
+    <div class="mapTools">
+<!--        <textarea ng-model="printScreen.text"></textarea>-->
+        <div class="imageSplitterForm">
+<!--
+            <form ng-submit="splitImage()">
+                <label>Width</label><input type="string" ng-model="imageRef.width" placeholder="258"><br>
+                <label>Height</label><input type="string" ng-model="imageRef.height" placeholder="20834"><br>
+                <label>Cell Width</label><input type="string" ng-model="imageRef.cellWidth" placeholder="32"><br>
+                <label>Cell Height</label><input type="string" ng-model="imageRef.cellHeight" placeholder="32"><br>
+                <button type="submit">Split Image</button><button type="button" ng-click="displayWorld()">Display World</button>
+            </form>
+-->
+            <label>Map Name: </label><input type="text" ng-model="currentMap.name"><br>
+            <label>Map X: </label><input type="number" ng-model="currentMap.x" ng-change="fetchMap()"><br>
+            <label>Map Y: </label><input type="number" ng-model="currentMap.y" ng-change="fetchMap()"><br>
+            <label>Map Coordinates: </label><input type="string" ng-model="currentMap.mapCoordinates" disabled><br>
+            <button type="button" ng-click="saveMap()">Save Map</button>
+            <button type="button" ng-click="saveWorld()">Save World</button>
+        </div>
+        
+    </div>
+    <div class="subControls">
+        
+    </div>
+    <div ng-if="tileColumnsReady">
+        <div class="tileSetSheet" style="grid-template-columns: repeat({{tileColumns}}, 32px); height: 80; overflow: scroll;">
+            <div ng-repeat="tile in tileSet" class="{{tile}} tileItem" ng-click="copyTile(tile)"></div>
+        </div>
+    </div>
+    <div style="display: grid; grid-template-columns: 32px 640px 1fr;">
+        <div>
+            <div class="emptyTile"></div>
+            <div class="emptyTile">0</div>
+            <div class="emptyTile">1</div>
+            <div class="emptyTile">2</div>
+            <div class="emptyTile">3</div>
+            <div class="emptyTile">4</div>
+            <div class="emptyTile">5</div>
+            <div class="emptyTile">6</div>
+            <div class="emptyTile">7</div>
+            <div class="emptyTile">8</div>
+            <div class="emptyTile">9</div>
+            <div class="emptyTile">10</div>
+            <div class="emptyTile">11</div>
+            <div class="emptyTile">12</div>
+            <div class="emptyTile">13</div>
+            <div class="emptyTile">14</div>
+        </div>
+        <div id="renderMap">
+            <div class="emptyTile">0</div>
+            <div class="emptyTile">1</div>
+            <div class="emptyTile">2</div>
+            <div class="emptyTile">3</div>
+            <div class="emptyTile">4</div>
+            <div class="emptyTile">5</div>
+            <div class="emptyTile">6</div>
+            <div class="emptyTile">7</div>
+            <div class="emptyTile">8</div>
+            <div class="emptyTile">9</div>
+            <div class="emptyTile">10</div>
+            <div class="emptyTile">11</div>
+            <div class="emptyTile">12</div>
+            <div class="emptyTile">13</div>
+            <div class="emptyTile">14</div>
+            <div class="emptyTile">15</div>
+            <div class="emptyTile">16</div>
+            <div class="emptyTile">17</div>
+            <div class="emptyTile">18</div>
+            <div class="emptyTile">19</div>
+            <div ng-repeat="mapTile in rawMap track by $index" class="tileItem" ng-click="pasteTile($index)">
+                <div class="tileBG tileItem {{mapTile[0]}}"></div>
+                <div class="tileMG tileItem {{mapTile[1]}}"></div>
+                <div class="tileFG tileItem {{mapTile[2]}}">
+                    <p>
+                        <span ng-if="mapTile[3] == 'U'">U</span>
+                        <span ng-if="mapTile[4] =='D'">D</span>
+                        <span ng-if="mapTile[5] =='P'">P</span>
+                    </p>
+
+                </div>
+            </div>
+            <div class="controlContainer">
+                <div id="mapControls">
+                    <button type="button" ng-click="toggleFGBG()">{{toggleTile}}</button>
+                    <button type="button" ng-click="compileMap()">Compile</button>
+                    <button type="button" ng-click="copyPath()">Path</button>
+                    <button type="button" ng-click="copyUnpassable()">Unpassable</button>
+                    <button type="button" ng-click="copyDoor()">Door</button>
+                    <button type="button" ng-click="eraseClass()">Erase</button>
+                    <button ng-click="undoMap()">Undo</button>
+                    <button ng-click="redoMap()">Redo</button>
+                    <button ng-click="bucketMap()">Bucket</button>
+                    <button ng-click="showCurrentMap()">Show Map</button>
+                </div>
+                <div>
+                    <label>Hex Map Color</label>
+                    <input type="text" ng-model="currentMap.mapColor">
+                    <div id="mapColor" style="width: 20px; height: 20px; border: 1px solid black; background: {{currentMap.mapColor}};"></div>
+                </div>
+            </div>
+        </div>
+        <div class="doorsPaths">
+           <h1>TEST</h1>
+            <h2 style="text-decoration: underline;">Paths</h2>
+            <ul>
+                <li ng-repeat="path in paths">
+                    <div>
+                        <h4>{{path.name}}: </h4>
+                        <label>mapSet: </label><input type="text" ng-model="path.mapSet"><br>
+                        <label>mapX: </label><input type="text" ng-model="path.mapX"><br>
+                        <label>mapY: </label><input type="text" ng-model="path.mapY"><br>
+                        <label>playerX: </label><input type="text" ng-model="path.playerX"><br>
+                        <label>playerY: </label><input type="text" ng-model="path.playerY"><br>
+                        
+                    </div>
+                </li>
+            </ul>
+            <h2 style="text-decoration: underline;">Doors</h2>
+            <ul>
+                <li ng-repeat="door in doors">
+                    <div>
+                        <h4>{{door.name}}: </h4>
+                        <label>mapSet: </label><input type="text" ng-model="door.mapSet"><br>
+                        <label>mapX: </label><input type="text" ng-model="door.mapX"><br>
+                        <label>mapY: </label><input type="text" ng-model="door.mapY"><br>
+                        <label>playerX: </label><input type="text" ng-model="door.playerX"><br>
+                        <label>playerY: </label><input type="text" ng-model="door.playerY"><br>
+                        
+                    </div>
+                </li>
+            </ul>
+            <button type="button" ng-click="processPDs()">Process</button>
+        </div>
+    </div>
+    
+</div>
+
+
+<script src="./../assets/maps/maps.json"></script>
