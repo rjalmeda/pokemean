@@ -134,24 +134,28 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
     $scope.pasteTile = function(idx){
         $scope.backupMap();
         console.log($scope.copyClass);
-        if($scope.copyClass == "U" && $scope.rawMap[idx][3] == "U"){
-            $scope.rawMap[idx][3] = "";
+        if($scope.copyClass == "U" && $scope.rawMap[idx].unpassable){
+            $scope.rawMap[idx].unpassable = false;
         } else if ($scope.copyClass == "U"){
-            $scope.rawMap[idx][3] = "U"
-        } else if ($scope.copyClass == "D" && $scope.rawMap[idx][4] == "D"){
-            $scope.rawMap[idx][4] = ""
+            $scope.rawMap[idx].unpassable = true;
+        } else if ($scope.copyClass == "D" && $scope.rawMap[idx].door){
+            $scope.rawMap[idx].door = false
         } else if ($scope.copyClass == "D"){
-            $scope.rawMap[idx][4] = "D"
-        } else if ($scope.copyClass == "P" && $scope.rawMap[idx][5] == "P"){
-            $scope.rawMap[idx][5] = ""
+            $scope.rawMap[idx].door = true;
+        } else if ($scope.copyClass == "P" && $scope.rawMap[idx].path){
+            $scope.rawMap[idx].path = false
         } else if ($scope.copyClass == "P"){
-            $scope.rawMap[idx][5] = "P"
+            $scope.rawMap[idx].path = true
+        } else if ($scope.copyClass == "E" && $scope.rawMap[idx].encounter){
+            $scope.rawMap[idx].encounter = false
+        } else if ($scope.copyClass == "E"){
+            $scope.rawMap[idx].encounter = true
         } else if ($scope.toggleTile == "FG"){
-            $scope.rawMap[idx][2] = $scope.copyClass;
+            $scope.rawMap[idx].FG = $scope.copyClass;
         } else if ($scope.toggleTile == "MG"){
-            $scope.rawMap[idx][1] = $scope.copyClass;
+            $scope.rawMap[idx].MG = $scope.copyClass;
         } else if ($scope.toggleTile == "BG"){
-            $scope.rawMap[idx][0] = $scope.copyClass;
+            $scope.rawMap[idx].BG = $scope.copyClass;
         };
         $scope.clearRedo();
         $scope.checkPathsDoors();
@@ -179,6 +183,9 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
     $scope.copyDoor = function(){
         $scope.copyClass = "D";
     };
+    $scope.copyEncounter = function(){
+        $scope.copyClass = "E";
+    };
     $scope.eraseClass = function(){
         $scope.copyClass = "";
     };
@@ -189,8 +196,9 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
     $scope.mapRedoHistory = [];
     $scope.backupMap = function(){
         var tempMap = [];
+        console.log($scope.rawMap);
         for (var i = 0; i < $scope.rawMap.length; i++){
-            var tempData = $scope.rawMap[i].slice();
+            var tempData = Object.assign({}, $scope.rawMap[i]);
             tempMap.push(tempData);
         };
         $scope.mapHistory.push(tempMap);
@@ -202,7 +210,7 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
         console.log("undo");
         var tempMap = [];
         for (var i = 0; i < $scope.rawMap.length; i++){
-            var tempData = $scope.rawMap[i].slice();
+            var tempData = Object.assign({}, $scope.rawMap[i]);
             tempMap.push(tempData);
         };
         $scope.mapRedoHistory.push(tempMap);
@@ -228,23 +236,23 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
         $scope.clearRedo();
         if($scope.copyClass == "P"){
             for(var i = 0; i < $scope.rawMap.length; i++){
-                $scope.rawMap[i][3] = "P";
+                $scope.rawMap[i].path = true;
             }
         } else if ($scope.copyClass =="U"){
             for(var i = 0; i < $scope.rawMap.length; i++){
-                $scope.rawMap[i][3] = "U";
+                $scope.rawMap[i].unpassable = true;
             }
         } else if ($scope.toggleTile == "FG"){
             for(var i = 0; i < $scope.rawMap.length; i++){
-                $scope.rawMap[i][2] = $scope.copyClass;
+                $scope.rawMap[i].FG = $scope.copyClass;
             }
         } else if ($scope.toggleTile == "BG"){
             for(var i = 0; i < $scope.rawMap.length; i++){
-                $scope.rawMap[i][0] = $scope.copyClass;
+                $scope.rawMap[i].BG = $scope.copyClass;
             }
         } else if ($scope.toggleTile == "MG"){
             for(var i = 0; i < $scope.rawMap.length; i++){
-                $scope.rawMap[i][1] = $scope.copyClass;
+                $scope.rawMap[i].MG = $scope.copyClass;
             }
         }
     };
@@ -269,6 +277,19 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
             $scope.rawMap = $scope.currentMap.map.raw;
         });
     };
+    $scope.confirmMapDelete = false;
+    
+    $scope.toggleDelete = function(){
+        $scope.confirmMapDelete = !$scope.confirmMapDelete;
+    };
+    
+    $scope.deleteMap = function(){
+        console.log('deleting');
+        $scope.backupMap();
+        mapFactory.deleteMap($scope.currentMap.mapCoordinates, function(data){
+            console.log(data);
+        })
+    }
     
     $scope.updateCoordinates = function(callback){
         $scope.currentMap.mapCoordinates = "" + $scope.currentMap.x + "," + $scope.currentMap.y;
@@ -276,16 +297,19 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
             callback();
         };
     };
-    $scope.fetchMap = function(){
+    $scope.fetchMap = function(callback){
         $scope.updateCoordinates(function(){
 //            console.log("Fetching");
             mapFactory.fetchMap($scope.currentMap.mapCoordinates, function(data){
-//                console.log(data);
+                console.log(data);
                 $scope.currentMap = data;
                 $scope.rawMap = data.map.raw;
                 $scope.checkPathsDoors();
                 $scope.clearRedo();
                 $scope.clearHistory();
+                if(callback){
+                    callback();
+                };
             })
         });
     };
@@ -299,7 +323,7 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
         let doors = [];
         let paths = [];
         for (var i = 0; i < $scope.rawMap.length; i++){
-            if($scope.rawMap[i][4] == "D"){
+            if($scope.rawMap[i].door == true){
                 var datapoint = {
                     x: (i)%20,
                     y: Math.floor((i+1)/20)
@@ -312,7 +336,7 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
                 };
                 doors.push(datapoint);
             };
-            if($scope.rawMap[i][5] == "P"){
+            if($scope.rawMap[i].path == true){
                 var datapoint = {
                     x: (i)%20,
                     y: Math.floor((i+1)/20)

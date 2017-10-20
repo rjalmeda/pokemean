@@ -1,15 +1,273 @@
-app.controller('gameController', function($scope, $location, pokemonFactory, loginFactory, amazonFactory){
+app.controller('gameController', function($scope, $window, $location, pokemonFactory, loginFactory, amazonFactory, mapFactory){
+    
+
+        
+//    moveplayer functions
+    
+    var playerDiv = angular.element(document).find("#player");
+    
+    var displayPlayer = function(){
+        playerDiv.css("left", `${wherePlayer.x}px`);
+        playerDiv.css("top", `${wherePlayer.y}px`);
+    };
+    
+    var wherePlayer = {
+        movingX: false,
+        movingY: false,
+        lastDirX: 'right',
+        lastDirY: 'down',
+        lastDir: 'down'
+    };
+    
+    var stopPlayer = function(){
+        if(wherePlayer.movingX || wherePlayer.movingY){
+            wherePlayer.movingX = false;
+            wherePlayer.movingY = false;
+        }
+    };
+    
+    
+    
+    $scope.disableControls = false;
+    $scope.keypressdown = function(e){
+        if (!$scope.disableControls){
+            if(e.keyCode==37){
+                if(!wherePlayer.movingLeft && !wherePlayer.movingUp && !wherePlayer.movingRight && !wherePlayer.movingDown ){
+                    wherePlayer.movingX = 'left';
+                }
+            };
+            if(e.keyCode==38){
+                if(!wherePlayer.movingLeft && !wherePlayer.movingUp && !wherePlayer.movingRight && !wherePlayer.movingDown ){
+                    wherePlayer.movingY = 'up';
+                }
+            };
+            if(e.keyCode==39){
+                if(!wherePlayer.movingLeft && !wherePlayer.movingUp && !wherePlayer.movingRight && !wherePlayer.movingDown ){
+                    wherePlayer.movingX = 'right';
+                }
+            };
+            if(e.keyCode==40){
+                if(!wherePlayer.movingLeft && !wherePlayer.movingUp && !wherePlayer.movingRight && !wherePlayer.movingDown ){
+                    wherePlayer.movingY = 'down';
+                }
+            };  
+        };
+        console.log(wherePlayer)
+    };
+    $scope.keypressup = function(e){
+        if (!$scope.disableControls){
+            if(e.keyCode==37){
+                wherePlayer.movingX = false;
+                wherePlayer.lastDirX = 'left';
+                wherePlayer.lastDir = 'left';
+            };
+            if(e.keyCode==38){
+                wherePlayer.movingY = false;
+                wherePlayer.lastDirY = 'up';
+                wherePlayer.lastDir = 'up';
+            };
+            if(e.keyCode==39){
+                wherePlayer.movingX = false;
+                wherePlayer.lastDirX = 'right';
+                wherePlayer.lastDir = 'right';
+            };
+            if(e.keyCode==40){
+                wherePlayer.movingY = false;
+                wherePlayer.lastDirY = 'down';
+                wherePlayer.lastDir = 'down';
+            };
+        };
+//        console.log(wherePlayer);
+    };
+    var probed = true;
+    
+    var playerSurroundings = [[0,0,0],
+                             [0,0,0],
+                             [0,0,0]];
+    
+    
+    function probeSurroundings(callback){
+        var playerX = wherePlayer.x/32;
+        var playerY = wherePlayer.y/32;
+        for(var i = 0; i < 3; i++){
+            for(var k = 0; k < 3; k++){
+                if(playerX + k - 1 < 0 || playerX + k - 1 > 19 || playerY + i - 1 < 0 || playerY + i - 1 > 14){
+                    console.log("at the edge");
+                    playerSurroundings[i][k] = [0,0,0,"U",0];
+                } else {
+                    playerSurroundings[i][k] = $scope.currentMap.map.compiled[playerY+i-1][playerX+k-1];
+                }
+            }
+        };
+        probed = true; 
+        callback();
+    };
+    
+    var movePlayer = function(){
+        if(wherePlayer.movingX && !wherePlayer.movingY && wherePlayer.y%32 === 0){
+            if(wherePlayer.movingX === 'left'){
+                if(playerSurroundings[1][0][3] !== "U"){
+                    wherePlayer.x -= 4;
+                    if(!(playerDiv.css('animation')=='walk-left 0.4s steps(3) infinite')){
+                        playerDiv.css('animation', 'walk-left 0.4s steps(3) infinite');
+                    }
+                    if(probed){
+                       probed=false;
+                    }
+                }
+            }
+            if(wherePlayer.movingX === 'right'){
+                if(playerSurroundings[1][2][3] !== "U"){
+                    wherePlayer.x += 4;
+                    if(!(playerDiv.css('animation')=='walk-right 0.4s steps(3) infinite')){
+                        playerDiv.css('animation', 'walk-right 0.4s steps(3) infinite');
+                    }
+                    if(probed){
+                       probed=false;
+                    }
+                }
+            }
+        }
+        if(wherePlayer.movingY && !wherePlayer.movingX && wherePlayer.x%32 === 0){
+            if(wherePlayer.movingY === 'up'){
+                if(playerSurroundings[0][1][3] !== "U"){
+                    wherePlayer.y -= 4;
+                    if(!(playerDiv.css('animation')=='walk-up 0.4s steps(3) infinite')){
+                        playerDiv.css('animation', 'walk-up 0.4s steps(3) infinite');
+                    }
+                    if(probed){
+                       probed=false;
+                    }
+                }
+            }
+            if(wherePlayer.movingY === 'down'){
+                if(playerSurroundings[2][1][3] !== "U"){
+                    wherePlayer.y += 4;
+                    if(!(playerDiv.css('animation')=='walk-down 0.4s steps(3) infinite')){
+                        playerDiv.css('animation', 'walk-down 0.4s steps(3) infinite');
+                    }
+                    if(probed){
+                       probed=false;
+                    }
+                }
+            }
+        }
+        if (!wherePlayer.movingX){
+            if(!(wherePlayer.x%32===0)){
+                if(wherePlayer.lastDirX === 'left'){
+                    wherePlayer.x -= 4;
+                } else if (wherePlayer.lastDirX === 'right'){
+                    wherePlayer.x += 4;
+                }
+            }
+        }
+        if (!wherePlayer.movingY){
+            if(!(wherePlayer.y%32 === 0)){
+                if(wherePlayer.lastDirY === 'up'){
+                    wherePlayer.y -= 4;
+                } else if (wherePlayer.lastDirY === 'down'){
+                    wherePlayer.y += 4;
+                }
+            }
+        }
+        if (!wherePlayer.movingY && !wherePlayer.movingX && wherePlayer.x%32 === 0 && wherePlayer.y%32 === 0){
+            if(wherePlayer.lastDir === 'left'){
+                playerDiv.css('animation', 'stand-left 2.0s steps(1) infinite')
+            } else if(wherePlayer.lastDir === 'up'){
+                playerDiv.css('animation', 'stand-up 2.0s steps(1) infinite')
+            } else if(wherePlayer.lastDir === 'right'){
+                playerDiv.css('animation', 'stand-right 2.0s steps(1) infinite')
+            } else if(wherePlayer.lastDir === 'down'){
+                playerDiv.css('animation', 'stand-down 2.0s steps(1) infinite')
+            }
+        };
+        if (wherePlayer.x%32 === 0 && wherePlayer.y%32 === 0 && !probed){
+            probeSurroundings(function(){
+                if(atDoor()){
+                    moveDoor();
+                }
+            });
+        };
+        if (playerSurroundings[1][1][5] === "P"){
+            console.log("on path");
+            console.log(playerSurroundings);
+            if(playerSurroundings[0][1] == [0,0,0,"U",0] && wherePlayer.movingY == "up"){
+                console.log("moving up on path");
+                movePath();
+            } else if (playerSurroundings[2][1] == [0,0,0,"U",0] && wherePlayer.movingY == "down"){
+                console.log("moving down on path");
+                movePath();
+            } else if (playerSurroundings[1][0] == [0,0,0,"U",0] && wherePlayer.movingY == "left"){
+                console.log("moving left on path");
+                movePath();
+            } else if (playerSurroundings[1][2] == [0,0,0,"U",0] && wherePlayer.movingY == "right"){
+                console.log("moving right on path");
+                movePath();
+            }
+        }                
+        
+    };
+    
+    function atDoor(){
+        if(playerSurroundings[1][1][4] == "D"){
+            return true;
+        } else {
+            return false;
+        }
+    };
+    
+    function moveDoor(){
+        var xCoord = Math.floor(wherePlayer.x/32);
+        var yCoord = Math.floor(wherePlayer.y/32);
+        console.log(xCoord + "-" + yCoord);
+    };
+    
+    function movePath(){
+        var xCoord = Math.floor(wherePlayer.x/32);
+        var yCoord = Math.floor(wherePlayer.y/32);
+        console.log(xCoord + "-" + yCoord);
+    }
+//    map functions
+    
+    $scope.currentMap ={
+        mapCoordinates: "20,20"
+    }
+    
+    $scope.fetchMap = function(){
+        mapFactory.fetchMap($scope.currentMap.mapCoordinates, function(data){
+            $scope.currentMap = data;
+            $scope.rawMap = data.map.raw;
+            wherePlayer.x = $scope.currentMap.playerLocation.x;
+            wherePlayer.y = $scope.currentMap.playerLocation.y;
+            wherePlayer.lastDir = $scope.currentMap.playerLocation.facing;
+            displayPlayer();
+//            console.log(data);
+            probeSurroundings(function(){
+            });
+            startAnimating(targetFPS);
+            console.log("fetching map");
+        });
+    };
+    
+    $scope.keypress = function(event){
+        console.log(event);
+    }
+    
+    $scope.fetchMap();
+    
     var checkUser = function(callback){
         loginFactory.checkUser(function(data){
-            console.log(data);
+//            console.log(data);
             $scope.user = data.data.user;
-            console.log($scope.user);
+//            console.log($scope.user);
         })
         callback();
     }
     checkUser(function(){
  
     });
+    
+    $scope.showBattlePartial = false;
     
 //    amazon product api sample query
 //    $scope.items = [];
@@ -87,9 +345,9 @@ app.controller('gameController', function($scope, $location, pokemonFactory, log
     
     var generatePokemon = function(pokeId, callback){
         pokemonFactory.getNewPokemon(pokeId, function(data){
-            console.log(data);
+//            console.log(data);
             if(data.cached){
-                console.log("found cached");
+//                console.log("found cached");
                 return callback(data.data.data);
             } else {
                 var newpokemon = {};
@@ -110,21 +368,21 @@ app.controller('gameController', function($scope, $location, pokemonFactory, log
                 newpokemon.ogg = './assets/sounds/'+newpokemon.id+'.ogg';
                 newpokemon.mp3 = './assets/sounds/'+newpokemon.id+'.mp3';
                 for (var j = 0; j<2; j++){
-                    console.log(j);
-                    console.log('getting move - ', j+1);
+//                    console.log(j);
+//                    console.log('getting move - ', j+1);
                     pokemonFactory.getMove(data.data.moves[j].move.url, function(move){
-                        console.log(move.data);
+//                        console.log(move.data);
                         newpokemon.moves.push(move.data);
                         if(newpokemon.moves.length == 2){
-                            console.log("next step");
+//                            console.log("next step");
                             for (var k = 0; k < data.data.types.length; k++){
                                 newpokemon.types.push(data.data.types[k].type.name);
                                 if(k == data.data.types.length - 1){
-                                    console.log("last step");
+//                                    console.log("last step");
                                     pokemonFactory.getAbility(data.data.abilities[0].ability.url, function(ability){
                                         newpokemon.abilities.push(ability.data);
                                         pokemonFactory.cachePokemon(newpokemon, function(data){
-                                            console.log("pokemon cached");
+//                                            console.log("pokemon cached");
                                             return callback(newpokemon);
                                         })
                                     })
@@ -138,7 +396,7 @@ app.controller('gameController', function($scope, $location, pokemonFactory, log
     }
     
     var generateRandomPokemon = function(firstPokeId, lastPokeId, difficulty){
-        console.log("generating " + difficulty + " difficulty encounter pokemon");
+//        console.log("generating " + difficulty + " difficulty encounter pokemon");
         var enemyPokemon;
         var randomRange;
         var rangeOffset;
@@ -574,7 +832,7 @@ app.controller('gameController', function($scope, $location, pokemonFactory, log
         return multiplier;
     }
     
-    function animate(atk_id,def_id){
+    function fightAnimate(atk_id,def_id){
         if (atk_id == 1){
             atk_mot1 = '+=25px';
             atk_mot2 = '-=25px';
@@ -598,7 +856,7 @@ app.controller('gameController', function($scope, $location, pokemonFactory, log
         if (who === 1){
             var attacker = $scope.user.pokemons[$scope.currentPokemonIdx];
             var defender = $scope.enemyPokemonLow;
-            setTimeout(function(){animate(1, 2)},500);
+            setTimeout(function(){fightAnimate(1, 2)},500);
             attackerSound = new Audio(attacker.mp3);
             defenderSound = new Audio(defender.mp3);
         } else {
@@ -606,7 +864,7 @@ app.controller('gameController', function($scope, $location, pokemonFactory, log
             var attacker = $scope.enemyPokemonLow;
             attackerSound = new Audio(attacker.mp3);
             defenderSound = new Audio(defender.mp3);
-            setTimeout(function(){animate(2, 1)},500);
+            setTimeout(function(){fightAnimate(2, 1)},500);
         }
         var multiplier = calcmultiplier(attacker, defender);
         if (multiplier == 0){
@@ -642,5 +900,36 @@ app.controller('gameController', function($scope, $location, pokemonFactory, log
         angular.element('#status').prepend(attacker.name+' attacks '+defender.name+'\n');
         defender.hp -= atk;
         angular.element('#current'+2+'hp').html(defender.hp);
+    };
+    //    Animation Functions
+    var stop = false;
+    var frameCount = 0;
+    var $results = $("#results");
+    var fps, fpsInterval, startTime, now, then, elapsed;
+    var targetFPS = 60;
+
+    function startAnimating(fps) {
+        fpsInterval = 1000 / fps;
+        then = Date.now();
+        startTime = then;
+        animate();
+    }
+    
+    
+    function animate() {
+//        console.log("start animation");
+        requestAnimationFrame(animate);
+        now = Date.now();
+        elapsed = now - then;
+        if (elapsed > fpsInterval) {
+            then = now - (elapsed % fpsInterval);
+            movePlayer();
+            if(playerDiv === null){
+                animate = '';
+            }
+            else {
+                displayPlayer();
+            }
+        }
     }
 })

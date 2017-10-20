@@ -16,3 +16,17 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 }
+
+.innerScreenBorder {
+    width: 880px;
+    height: 560px;
+    box-sizing: border-box;
+    background: #898989;
+    border-radius: 15px;
+    border-bottom-right-radius: 120px;
+    padding: 30px;
+}
+
+.outerScreenBorder {
+    background: #BCBCBC;
+}

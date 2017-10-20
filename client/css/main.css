@@ -5508,6 +5508,19 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr; }
 
+.innerScreenBorder {
+  width: 880px;
+  height: 560px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background: #898989;
+  border-radius: 15px;
+  border-bottom-right-radius: 120px;
+  padding: 30px; }
+
+.outerScreenBorder {
+  background: #BCBCBC; }
+
 .tileSetSheet {
   display: grid;
   grid-gap: 0;
@@ -5515,10 +5528,30 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   overflow: scroll; }
 
 .tileItem {
-  border: 1px solid black;
+  width: 32px;
+  height: 32px;
+  position: relative;
+  border: 1px solid black; }
+
+#gameWindow {
+  position: relative;
+  margin: auto;
+  border: 5px black solid;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 15px;
+  overflow: hidden;
+  outline: none;
+  width: 650px;
+  height: 490px; }
+
+.gameTileItem {
   width: 32px;
   height: 32px;
   position: relative; }
+
+.player {
+  z-index: 3; }
 
 .tileBG {
   z-index: 0;
@@ -5550,6 +5583,9 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   top: 0px;
   left: 0px; }
 
+.tileBorder {
+  border: 1px solid black; }
+
 .emptyTile {
   width: 32px;
   height: 32px;
@@ -5563,7 +5599,7 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   display: grid;
   grid-gap: 0;
   grid-template-columns: repeat(20, 32px);
-  grid-template-rows: repeat(20, 32px); }
+  grid-template-rows: repeat(16, 32px); }
 
 #mapControls {
   display: grid;

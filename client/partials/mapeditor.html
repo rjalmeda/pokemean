@@ -70,15 +70,15 @@
             <div class="emptyTile">18</div>
             <div class="emptyTile">19</div>
             <div ng-repeat="mapTile in rawMap track by $index" class="tileItem" ng-click="pasteTile($index)">
-                <div class="tileBG tileItem {{mapTile[0]}}"></div>
-                <div class="tileMG tileItem {{mapTile[1]}}"></div>
-                <div class="tileFG tileItem {{mapTile[2]}}">
+                <div class="tileBG tileBorder {{mapTile.BG}}"></div>
+                <div class="tileMG tileBorder {{mapTile.MG}}"></div>
+                <div class="tileFG tileBorder {{mapTile.FG}}">
                     <p>
-                        <span ng-if="mapTile[3] == 'U'">U</span>
-                        <span ng-if="mapTile[4] =='D'">D</span>
-                        <span ng-if="mapTile[5] =='P'">P</span>
+                        <span ng-if="mapTile.unpassable">U</span>
+                        <span ng-if="mapTile.door">D</span>
+                        <span ng-if="mapTile.path">P</span>
+                        <span ng-if="mapTile.encounter">E</span>
                     </p>
-
                 </div>
             </div>
             <div class="controlContainer">
@@ -88,11 +88,17 @@
                     <button type="button" ng-click="copyPath()">Path</button>
                     <button type="button" ng-click="copyUnpassable()">Unpassable</button>
                     <button type="button" ng-click="copyDoor()">Door</button>
+                    <button type="button" ng-click="copyEncounter()">Encounter</button>
                     <button type="button" ng-click="eraseClass()">Erase</button>
                     <button ng-click="undoMap()">Undo</button>
                     <button ng-click="redoMap()">Redo</button>
                     <button ng-click="bucketMap()">Bucket</button>
                     <button ng-click="showCurrentMap()">Show Map</button>
+                    <div>
+                        <button ng-if="!confirmMapDelete" ng-click="toggleDelete()">Delete Map</button>
+                        <button ng-if="confirmMapDelete" ng-click="deleteMap()">Yes</button>
+                        <button ng-if="confirmMapDelete" ng-click="toggleDelete()">No</button> 
+                    </div>
                 </div>
                 <div>
                     <label>Hex Map Color</label>

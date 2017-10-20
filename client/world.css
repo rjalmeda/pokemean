@@ -4,14 +4,7 @@
     margin: 0px;
     padding: 0px;
 }
-div#gameWindow {
-    position: relative;
-    border: 5px black solid;
-    border-radius: 15px;
-    overflow: hidden;
-    width: 640px;
-    height: 480px;
-}
+
 div.world {
     position: absolute;
     top: 0px;

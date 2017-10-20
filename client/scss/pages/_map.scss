@@ -6,10 +6,32 @@
 }
 
 .tileItem {
-    border: 1px solid black;
     width: 32px;
     height: 32px;
     position: relative;
+    border: 1px solid black;
+}
+
+#gameWindow {
+    position: relative;
+    margin: auto;
+    border: 5px black solid;
+    box-sizing: border-box;
+    border-radius: 15px;
+    overflow: hidden;
+    outline: none;
+    width: 650px;
+    height: 490px;
+}
+
+.gameTileItem{
+    width: 32px;
+    height: 32px;
+    position: relative; 
+}
+
+.player {
+    z-index: 3;
 }
 
 .tileBG {
@@ -42,6 +64,10 @@
     left: 0px;
 }
 
+.tileBorder {
+    border: 1px solid black;
+}
+
 .emptyTile {
     width: 32px;
     height: 32px;
@@ -55,8 +81,10 @@
     display: grid;
     grid-gap: 0;
     grid-template-columns: repeat(20, 32px);
-    grid-template-rows: repeat(20, 32px);
+    grid-template-rows: repeat(16, 32px);
 }
+
+
 
 #mapControls {
     display: grid;

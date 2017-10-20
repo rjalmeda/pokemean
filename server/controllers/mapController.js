@@ -30,11 +30,23 @@ module.exports = (function(){
             })
             
         },
+        deleteMap: function(req,res){
+            Map.remove({mapCoordinates: req.params.mapCoord}, function(err, results){
+                if(err){
+                    console.log(err);
+                    return res.json({errors: err})
+                } else{
+                    console.log("Map Deleted");
+                    return res.json({results: results})
+                }
+            });
+        },
         fetchMap: function(req,res){
             Map.findOne({mapCoordinates: req.params.mapCoord}, function(err, map){
                 if(err){
                     return res.json({errors: err})
                 } else {
+                    console.log(map);
                     return res.json({map: map})
                 }
             })

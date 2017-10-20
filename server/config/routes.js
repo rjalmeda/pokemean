@@ -36,6 +36,9 @@ module.exports = function(app){
     app.post('/saveMap', function(req,res){
         mapController.saveMap(req,res);
     });
+    app.delete('/deleteMap/:mapCoord', function(req,res){
+        mapController.deleteMap(req,res);
+    });
     app.get('/fetchMap/:mapCoord', function(req,res){
         mapController.fetchMap(req,res);
     });
