@@ -16,7 +16,8 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
         movingY: false,
         lastDirX: 'right',
         lastDirY: 'down',
-        lastDir: 'down'
+        lastDir: 'down',
+        coordinates: ''
     };
     
     var stopPlayer = function(){
@@ -52,7 +53,7 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
                 }
             };  
         };
-        console.log(wherePlayer)
+//        console.log(wherePlayer)
     };
     $scope.keypressup = function(e){
         if (!$scope.disableControls){
@@ -87,26 +88,46 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
     
     
     function probeSurroundings(callback){
+//        console.log("Probing");
         var playerX = wherePlayer.x/32;
         var playerY = wherePlayer.y/32;
+        wherePlayer.coordinates = "" + playerX + "-" + playerY;
+        
+//        var mapCoordinates = [];
+//        console.log("Player Coordinates: " + playerX + "," + playerY);
         for(var i = 0; i < 3; i++){
+//            var mapRow = [];
             for(var k = 0; k < 3; k++){
-                if(playerX + k - 1 < 0 || playerX + k - 1 > 19 || playerY + i - 1 < 0 || playerY + i - 1 > 14){
-                    console.log("at the edge");
-                    playerSurroundings[i][k] = [0,0,0,"U",0];
+                var mapX = playerX + k - 1;
+                var mapY = playerY + i - 1;
+//                mapRow.push("" + mapX + "," + mapY);
+                if(mapX < 0 || mapX > 19 || mapY < 0 || mapY > 14){
+//                    console.log("at the edge");
+                    playerSurroundings[i][k] = {
+                        BG: "0",
+                        MG: "0",
+                        FG: "0",
+                        unpassable: true
+                    }
                 } else {
                     playerSurroundings[i][k] = $scope.currentMap.map.compiled[playerY+i-1][playerX+k-1];
                 }
-            }
+            };
+//            mapCoordinates.push(mapRow);
         };
         probed = true; 
+//        console.log(mapCoordinates);
         callback();
     };
     
     var movePlayer = function(){
+        if(changingMap){
+            return console.log("changing Map");
+        };
+//        console.log("moving");
         if(wherePlayer.movingX && !wherePlayer.movingY && wherePlayer.y%32 === 0){
             if(wherePlayer.movingX === 'left'){
-                if(playerSurroundings[1][0][3] !== "U"){
+                if(!playerSurroundings[1][0].unpassable){
                     wherePlayer.x -= 4;
                     if(!(playerDiv.css('animation')=='walk-left 0.4s steps(3) infinite')){
                         playerDiv.css('animation', 'walk-left 0.4s steps(3) infinite');
@@ -117,7 +138,7 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
                 }
             }
             if(wherePlayer.movingX === 'right'){
-                if(playerSurroundings[1][2][3] !== "U"){
+                if(!playerSurroundings[1][2].unpassable){
                     wherePlayer.x += 4;
                     if(!(playerDiv.css('animation')=='walk-right 0.4s steps(3) infinite')){
                         playerDiv.css('animation', 'walk-right 0.4s steps(3) infinite');
@@ -130,7 +151,7 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
         }
         if(wherePlayer.movingY && !wherePlayer.movingX && wherePlayer.x%32 === 0){
             if(wherePlayer.movingY === 'up'){
-                if(playerSurroundings[0][1][3] !== "U"){
+                if(!playerSurroundings[0][1].unpassable){
                     wherePlayer.y -= 4;
                     if(!(playerDiv.css('animation')=='walk-up 0.4s steps(3) infinite')){
                         playerDiv.css('animation', 'walk-up 0.4s steps(3) infinite');
@@ -141,7 +162,7 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
                 }
             }
             if(wherePlayer.movingY === 'down'){
-                if(playerSurroundings[2][1][3] !== "U"){
+                if(!playerSurroundings[2][1].unpassable){
                     wherePlayer.y += 4;
                     if(!(playerDiv.css('animation')=='walk-down 0.4s steps(3) infinite')){
                         playerDiv.css('animation', 'walk-down 0.4s steps(3) infinite');
@@ -185,31 +206,31 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
             probeSurroundings(function(){
                 if(atDoor()){
                     moveDoor();
-                }
+                    console.log("at a door");
+                };
             });
         };
-        if (playerSurroundings[1][1][5] === "P"){
-            console.log("on path");
-            console.log(playerSurroundings);
-            if(playerSurroundings[0][1] == [0,0,0,"U",0] && wherePlayer.movingY == "up"){
+        if (playerSurroundings[1][1].path && !changingMap){
+            if(playerSurroundings[0][1].BG == "0" && wherePlayer.movingY == "up"){
                 console.log("moving up on path");
                 movePath();
-            } else if (playerSurroundings[2][1] == [0,0,0,"U",0] && wherePlayer.movingY == "down"){
+            } else if (playerSurroundings[2][1].BG == "0" && wherePlayer.movingY == "down"){
                 console.log("moving down on path");
                 movePath();
-            } else if (playerSurroundings[1][0] == [0,0,0,"U",0] && wherePlayer.movingY == "left"){
+            } else if (playerSurroundings[1][0].BG == "0" && wherePlayer.movingX == "left"){
                 console.log("moving left on path");
                 movePath();
-            } else if (playerSurroundings[1][2] == [0,0,0,"U",0] && wherePlayer.movingY == "right"){
+            } else if (playerSurroundings[1][2].BG == "0" && wherePlayer.movingX == "right"){
                 console.log("moving right on path");
                 movePath();
             }
-        }                
+        }
+                        
         
     };
     
     function atDoor(){
-        if(playerSurroundings[1][1][4] == "D"){
+        if(playerSurroundings[1][1].door == true){
             return true;
         } else {
             return false;
@@ -217,35 +238,52 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
     };
     
     function moveDoor(){
-        var xCoord = Math.floor(wherePlayer.x/32);
-        var yCoord = Math.floor(wherePlayer.y/32);
-        console.log(xCoord + "-" + yCoord);
+        var door = $scope.currentMap.doors[wherePlayer.coordinates];
+        $scope.mapCoordinates = "" + door.mapX + "," + door.mapY;
+        changingMap = true;
+        $scope.fetchMap(door);
     };
     
     function movePath(){
-        var xCoord = Math.floor(wherePlayer.x/32);
-        var yCoord = Math.floor(wherePlayer.y/32);
-        console.log(xCoord + "-" + yCoord);
+        var path = $scope.currentMap.paths[wherePlayer.coordinates];
+        $scope.mapCoordinates = "" + path.mapX + "," + path.mapY;
+        changingMap = true;
+        $scope.fetchMap(path);
     }
 //    map functions
     
-    $scope.currentMap ={
-        mapCoordinates: "20,20"
-    }
+    var changingMap = false;
     
-    $scope.fetchMap = function(){
-        mapFactory.fetchMap($scope.currentMap.mapCoordinates, function(data){
+    $scope.mapCoordinates = "20,20";
+    
+    $scope.fetchMap = function(PD){
+        mapFactory.fetchMap($scope.mapCoordinates, function(data){
             $scope.currentMap = data;
             $scope.rawMap = data.map.raw;
-            wherePlayer.x = $scope.currentMap.playerLocation.x;
-            wherePlayer.y = $scope.currentMap.playerLocation.y;
-            wherePlayer.lastDir = $scope.currentMap.playerLocation.facing;
-            displayPlayer();
+            if(!wherePlayer.x){
+                wherePlayer.x = $scope.currentMap.playerLocation.x;
+            };
+            if(!wherePlayer.y){
+                wherePlayer.y = $scope.currentMap.playerLocation.y;
+            };
+            if(!wherePlayer.lastDir){
+                wherePlayer.lastDir = $scope.currentMap.playerLocation.facing;
+            };
 //            console.log(data);
             probeSurroundings(function(){
             });
-            startAnimating(targetFPS);
-            console.log("fetching map");
+            if(!animationStarted){
+                console.log("starting animation");
+                displayPlayer();
+                startAnimating(targetFPS);
+            };
+            if(PD){
+                wherePlayer.x = parseInt(PD.playerX)*32;
+                wherePlayer.y = parseInt(PD.playerY)*32;
+                probeSurroundings(function(){
+                    changingMap = false;
+                })
+            }
         });
     };
     
@@ -908,13 +946,16 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
     var fps, fpsInterval, startTime, now, then, elapsed;
     var targetFPS = 60;
 
+    var animationStarted = false;
+
+    
     function startAnimating(fps) {
+        animationStarted = true;
         fpsInterval = 1000 / fps;
         then = Date.now();
         startTime = then;
         animate();
-    }
-    
+    };
     
     function animate() {
 //        console.log("start animation");

@@ -1,7 +1,7 @@
 app.factory('mapFactory', function($http){
     
 //    pokeMap constructor
-    function PokeMap(mapX, mapY){
+    function PokeMap(mapCoord){
         this.map = {
             raw: [],
             compiled: []
@@ -11,6 +11,8 @@ app.factory('mapFactory', function($http){
             y: 1*32,
             facing: "down"
         };
+        this.x = 0;
+        this.y = 0;
         this.music = "";
         this.type = "outside";
         this.doors = {};
@@ -20,23 +22,12 @@ app.factory('mapFactory', function($http){
             uncommon: [],
             rare: []
         };
-        this.x = mapX;
-        this.y = mapY;
+        this.mapCoordinates = mapCoord;
         this.encounterRate = 0.10;
-        this.mapCoordinates = "";
         this.init = function(){
-            var xCoord = "",
-                yCoord = "";
-            for(var i = 0; i < 3 - mapX.length; i++){
-                xCoord += "0"
-            };
-            xCoord += mapX;
-            for(var i = 0; i < 3- mapY.length; i++){
-                yCoord += "0"
-            };
-            yCoord += mapY;
-            this.mapCoordinates = xCoord + "," + yCoord;
-            
+            var coordinates = this.mapCoordinates.split(',');
+            this.x = parseInt(coordinates[0]);
+            this.y = parseInt(coordinates[1]);
             for (var i = 0; i < 20; i++){
                 var newRow = [];
                 for (var k = 0; k < 15; k++){
@@ -77,6 +68,7 @@ app.factory('mapFactory', function($http){
     }
     
     factory.fetchMap = function(mapCoord, callback){
+        console.log(mapCoord);
         $http.get('/fetchMap/' + mapCoord).then(function(data){
 //            console.log(data);
             if (data.data.errors){
@@ -86,8 +78,9 @@ app.factory('mapFactory', function($http){
                 callback(data.data.map);
             } else if (!data.data.map){
                 console.log("generating new map");
-                var coordinates = mapCoord.split(",");
-                var newMap = new PokeMap(Number(coordinates[0]), Number(coordinates[1]));
+                var newMap = new PokeMap(mapCoord);
+                console.log(mapCoord);
+                console.log(newMap);
                 callback(newMap);
             } 
         })

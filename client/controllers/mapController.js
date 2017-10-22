@@ -289,10 +289,16 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
         mapFactory.deleteMap($scope.currentMap.mapCoordinates, function(data){
             console.log(data);
         })
-    }
+    };
+    
+    $scope.buildingName = "";
     
     $scope.updateCoordinates = function(callback){
         $scope.currentMap.mapCoordinates = "" + $scope.currentMap.x + "," + $scope.currentMap.y;
+        if($scope.buildingName != ""){
+            $scope.currentMap.mapCoordinates = $scope.currentMap.mapCoordinates + "," + $scope.buildingName;
+        };
+        console.log($scope.currentMap.mapCoordinates);
         if(callback){
             callback();
         };

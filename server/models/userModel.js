@@ -1,7 +1,10 @@
 var mongoose = require('mongoose');
 var UserSchema = mongoose.Schema({
     username: String,
-    password: String,
+    password: {
+        type: String,
+        select: false
+    },
     currentPokemonIdx: Number,
     pokemons: Array,
     inventory: [{

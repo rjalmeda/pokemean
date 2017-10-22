@@ -6,20 +6,20 @@ var Pokemon = mongoose.model('Pokemon');
 module.exports = (function(){
     return {
         login: function(req,res){
-            User.findOne({username: req.body.username}, function(err,user){
+            User.findOne({username: req.body.username})
+                .select('+password')
+                .exec(function(err,user){
                 if(!user){
                     var newuser = new User(req.body);
                     var password = bcrypt.hashSync(req.body.password, 8);
-                    console.log(password);
                     newuser.eggs = [];
                     var firstpokemon = (Math.floor(Math.random()*4))*3+1;
                     if (firstpokemon === 10){
                         firstpokemon = 25;
-                    };
+                    }
                     newuser.eggs.push(firstpokemon);
                     newuser.eggs.push(Math.floor(Math.random()*143)+1);
                     newuser.eggs.push(Math.floor(Math.random()*143)+1);
-                    console.log(newuser);
                     newuser.currentPokemonIdx = 0;
                     newuser.gender = 'male';
                     newuser.password = password;
@@ -35,7 +35,7 @@ module.exports = (function(){
                         req.session.save();
                         return res.json({success: true, user: user});
                     } else {
-                        return res.json({success: false, message: 'wrong password dude'});
+                        return res.json({success: false, message: 'wrong dude'});
                     }
                 }
             })
@@ -49,15 +49,12 @@ module.exports = (function(){
         },
         popEgg: function(req,res){
             User.findOne({username: req.session.user.username}, function(err,user){
-                console.log(user);
                 var newpokemon = req.body;
-                console.log(newpokemon);
                 user.pokemons.push(newpokemon);
                 user.eggs.pop();
                 user.save(function(err,data){
                     req.session.user = data;
                     req.session.save();
-                    data.password = '';
                     return res.json({success: true, message: 'added new pokemon', user: data});
                 })
             })
