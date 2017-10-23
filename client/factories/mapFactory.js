@@ -7,8 +7,8 @@ app.factory('mapFactory', function($http){
             compiled: []
         };
         this.playerLocation = {
-            x: 1*32,
-            y: 1*32,
+            x: 5*32,
+            y: 5*32,
             facing: "down"
         };
         this.x = 0;
@@ -38,7 +38,9 @@ app.factory('mapFactory', function($http){
                     var newData = {
                         BG: '0',
                         MG: '0',
+                        MG2: '0',
                         FG: '0',
+                        FG2: '0',
                         door: false,
                         path: false,
                         unpassable: false,

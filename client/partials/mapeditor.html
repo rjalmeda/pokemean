@@ -23,7 +23,12 @@
         
     </div>
     <div class="subControls">
-        
+        <div class="mapEditorPlayer">
+            <label>Player X: </label><input type="number" ng-model="currentMap.playerLocation.x"><br>
+            <label>Player Y: </label><input type="number" ng-model="currentMap.playerLocation.y"><br>
+            <label>Player Facing: </label><select ng-model="currentMap.playerLocation.facing" ng-options="p for p in playerFacingValues"></select>
+
+        </div>
     </div>
     <div ng-if="tileColumnsReady">
         <div class="tileSetSheet" style="grid-template-columns: repeat({{tileColumns}}, 32px); height: 80; overflow: scroll;">
@@ -70,10 +75,12 @@
             <div class="emptyTile">17</div>
             <div class="emptyTile">18</div>
             <div class="emptyTile">19</div>
-            <div ng-repeat="mapTile in rawMap track by $index" class="tileItem" ng-click="pasteTile($index)">
-                <div class="tileBG tileBorder {{mapTile.BG}}"></div>
-                <div class="tileMG tileBorder {{mapTile.MG}}"></div>
-                <div class="tileFG tileBorder {{mapTile.FG}}">
+            <div ng-repeat="mapTile in rawMap track by $index" class="tileItemEditor" ng-click="pasteTile($index)">
+                <div class="tileBG {{tileBorder}} {{mapTile.BG}}"></div>
+                <div class="tileMG {{tileBorder}} {{mapTile.MG}}"></div>
+                <div class="tileMG2 {{tileBorder}} {{mapTile.MG2}}"></div>
+                <div class="tileFG {{tileBorder}} {{mapTile.FG}}"></div>
+                <div class="tileFG2 {{tileBorder}} {{mapTile.FG2}}">
                     <p>
                         <span ng-if="mapTile.unpassable">U</span>
                         <span ng-if="mapTile.door">D</span>
@@ -90,11 +97,13 @@
                     <button type="button" ng-click="copyUnpassable()">Unpassable</button>
                     <button type="button" ng-click="copyDoor()">Door</button>
                     <button type="button" ng-click="copyEncounter()">Encounter</button>
+                    <button type="button" ng-click="copyPlayer()">Player Loc.</button>
                     <button type="button" ng-click="eraseClass()">Erase</button>
                     <button ng-click="undoMap()">Undo</button>
                     <button ng-click="redoMap()">Redo</button>
                     <button ng-click="bucketMap()">Bucket</button>
                     <button ng-click="showCurrentMap()">Show Map</button>
+                    <button ng-click="toggleTileBorders()">Toggle Tile Borders</button>
                     <div>
                         <button ng-if="!confirmMapDelete" ng-click="toggleDelete()">Delete Map</button>
                         <button ng-if="confirmMapDelete" ng-click="deleteMap()">Yes</button>

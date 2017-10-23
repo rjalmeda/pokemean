@@ -617,7 +617,7 @@ poke-mart checkout desk
     height: 32px;
     -webkit-animation: walk-left 1.0s steps(3) infinite;
     animation: walk-right 0.4s steps(3) infinite;
-    z-index: 1;
+    z-index: 6;
 }
 
 @-webkit-keyframes walk-left {

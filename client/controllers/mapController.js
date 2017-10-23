@@ -126,16 +126,24 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
         if ($scope.toggleTile == "BG"){
             $scope.toggleTile = "MG";
         } else if ($scope.toggleTile == "MG"){
+            $scope.toggleTile = "MG2";
+        } else if ($scope.toggleTile == "MG2"){
             $scope.toggleTile = "FG";
+        } else if ($scope.toggleTile == "FG"){
+            $scope.toggleTile = "FG2";
         } else {
             $scope.toggleTile = "BG"
         };
     };
     $scope.pasteTile = function(idx){
         $scope.backupMap();
-        console.log($scope.copyClass);
+//        console.log($scope.copyClass);
         if($scope.copyClass == "U" && $scope.rawMap[idx].unpassable){
             $scope.rawMap[idx].unpassable = false;
+        } else if ($scope.copyClass == "PL"){
+            console.log(idx);
+            $scope.currentMap.playerLocation.y = Math.floor(idx / 20)*32;
+            $scope.currentMap.playerLocation.x = (idx%20) * 32;
         } else if ($scope.copyClass == "U"){
             $scope.rawMap[idx].unpassable = true;
         } else if ($scope.copyClass == "D" && $scope.rawMap[idx].door){
@@ -152,11 +160,15 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
             $scope.rawMap[idx].encounter = true
         } else if ($scope.toggleTile == "FG"){
             $scope.rawMap[idx].FG = $scope.copyClass;
+        } else if ($scope.toggleTile == "FG2"){
+            $scope.rawMap[idx].FG2 = $scope.copyClass;
         } else if ($scope.toggleTile == "MG"){
             $scope.rawMap[idx].MG = $scope.copyClass;
+        } else if ($scope.toggleTile == "MG2"){
+            $scope.rawMap[idx].MG2 = $scope.copyClass;
         } else if ($scope.toggleTile == "BG"){
             $scope.rawMap[idx].BG = $scope.copyClass;
-        };
+        }
         $scope.clearRedo();
         $scope.checkPathsDoors();
     };
@@ -186,6 +198,10 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
     $scope.copyEncounter = function(){
         $scope.copyClass = "E";
     };
+    $scope.copyPlayer = function(){
+        $scope.copyClass = "PL";
+        console.log("copy player")
+    };
     $scope.eraseClass = function(){
         $scope.copyClass = "";
     };
@@ -196,7 +212,7 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
     $scope.mapRedoHistory = [];
     $scope.backupMap = function(){
         var tempMap = [];
-        console.log($scope.rawMap);
+//        console.log($scope.rawMap);
         for (var i = 0; i < $scope.rawMap.length; i++){
             var tempData = Object.assign({}, $scope.rawMap[i]);
             tempMap.push(tempData);
@@ -307,7 +323,7 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
         $scope.updateCoordinates(function(){
 //            console.log("Fetching");
             mapFactory.fetchMap($scope.currentMap.mapCoordinates, function(data){
-                console.log(data);
+//                console.log(data);
                 $scope.currentMap = data;
                 $scope.rawMap = data.map.raw;
                 $scope.checkPathsDoors();
@@ -390,7 +406,16 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
             paths: paths
         }
         return data;
-    }
+    };
+    $scope.tileBorder = "tileBorder";
+    $scope.toggleTileBorders = function(){
+        if($scope.tileBorder == "tileBorder"){
+            $scope.tileBorder = "";
+        } else {
+            $scope.tileBorder = "tileBorder";
+        }
+    };
+    $scope.playerFacingValues = ["up", "down", "left", "right"];
 });
 
 //sample world object:

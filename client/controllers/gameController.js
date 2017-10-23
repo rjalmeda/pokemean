@@ -106,7 +106,9 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
                     playerSurroundings[i][k] = {
                         BG: "0",
                         MG: "0",
+                        MG2: "0",
                         FG: "0",
+                        FG2: "0",
                         unpassable: true
                     }
                 } else {
@@ -273,6 +275,7 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
             probeSurroundings(function(){
             });
             if(!animationStarted){
+                console.log(data);
                 console.log("starting animation");
                 displayPlayer();
                 startAnimating(targetFPS);

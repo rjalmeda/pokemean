@@ -5533,6 +5533,11 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   position: relative;
   border: 1px solid black; }
 
+.tileItemEditor {
+  width: 32px;
+  height: 32px;
+  position: relative; }
+
 #gameWindow {
   position: relative;
   margin: auto;
@@ -5551,7 +5556,7 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   position: relative; }
 
 .player {
-  z-index: 3; }
+  z-index: 1; }
 
 .tileBG {
   z-index: 0;
@@ -5573,7 +5578,27 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   top: 0px;
   left: 0px; }
 
+.tileMG2 {
+  z-index: 6;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: 0px;
+  left: 0px; }
+
 .tileFG {
+  z-index: 9;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: 0px;
+  left: 0px; }
+
+.tileFG2 {
   z-index: 10;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
