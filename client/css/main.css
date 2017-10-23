@@ -5586,6 +5586,9 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
 .tileBorder {
   border: 1px solid black; }
 
+.mapEditorDoor input {
+  border: 1px solid black; }
+
 .emptyTile {
   width: 32px;
   height: 32px;

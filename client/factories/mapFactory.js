@@ -23,11 +23,15 @@ app.factory('mapFactory', function($http){
             rare: []
         };
         this.mapCoordinates = mapCoord;
+        this.building = "";
         this.encounterRate = 0.10;
         this.init = function(){
             var coordinates = this.mapCoordinates.split(',');
             this.x = parseInt(coordinates[0]);
             this.y = parseInt(coordinates[1]);
+            if(coordinates[2]){
+                this.building = coordinates[2];
+            };
             for (var i = 0; i < 20; i++){
                 var newRow = [];
                 for (var k = 0; k < 15; k++){
