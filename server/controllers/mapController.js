@@ -9,7 +9,10 @@ module.exports = (function(){
                     return res.json({errors: err})
                 } else if (map){
                     map.set(req.body);
+                    map.set('doors', req.body.doors);
+                    map.set('paths', req.body.paths);
                     map.save(function(err1, updatedMap){
+                        console.log(updatedMap.doors)
                         return res.json({error: err1, map: updatedMap})
                     })
                 } else if (!map){

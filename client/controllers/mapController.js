@@ -386,6 +386,7 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
             doors[doorItem.name] = {
                 mapX: doorItem.mapX,
                 mapY: doorItem.mapY,
+                building: doorItem.building,
                 playerX: doorItem.playerX,
                 playerY: doorItem.playerY,
                 mapSet: doorItem.mapSet

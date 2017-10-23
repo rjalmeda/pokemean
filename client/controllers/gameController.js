@@ -241,7 +241,7 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
     
     function moveDoor(){
         var door = $scope.currentMap.doors[wherePlayer.coordinates];
-        $scope.mapCoordinates = "" + door.mapX + "," + door.mapY;
+        $scope.mapCoordinates = "" + door.mapX + "," + door.mapY + "," + door.building;
         changingMap = true;
         $scope.fetchMap(door);
     };
