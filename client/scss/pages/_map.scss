@@ -30,6 +30,15 @@
     height: 490px;
 }
 
+.catchablePokemon img{
+    width: 32px;
+    height: 32px;   
+}
+
+.catchablePokemon {
+    display: inline;
+}
+
 .gameTileItem{
     width: 32px;
     height: 32px;
@@ -38,6 +47,27 @@
 
 .player {
     z-index: 1;
+}
+
+.subControls {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.mapEditor input{
+    border: 1px solid black;
+}
+
+#mapControls {
+    margin-top: 1.5em;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-gap: 0.5em;
+}
+
+#mapControls button {
+    border: 1px solid black;
+    display: inline-block;
 }
 
 .tileBG {
@@ -115,20 +145,6 @@
     grid-template-rows: repeat(16, 32px);
 }
 
-
-
-#mapControls {
-    display: grid;
-    grid-gap: 0.375em;
-    grid-template-columns: repeat(4,1fr);
-}
-
-.controlContainer {
-    display: grid;
-    margin-top: 0.5em;
-    grid-template-columns: 2fr 1fr;
-    grid-gap: 1em;
-}
 
 .gridContainer {
     display: grid;

@@ -1,5 +1,5 @@
 
-<div class="gridContainer">
+<div class="gridContainer mapEditor">
     <div class="mapTools">
 <!--        <textarea ng-model="printScreen.text"></textarea>-->
         <div class="imageSplitterForm">
@@ -27,7 +27,28 @@
             <label>Player X: </label><input type="number" ng-model="currentMap.playerLocation.x"><br>
             <label>Player Y: </label><input type="number" ng-model="currentMap.playerLocation.y"><br>
             <label>Player Facing: </label><select ng-model="currentMap.playerLocation.facing" ng-options="p for p in playerFacingValues"></select>
-
+        </div>
+        <div>
+            <label>Common Pokemon: </label><br><input type="text" ng-model="catchablePokemon.common" ng-change="checkCatchablePokemon()"><br>
+            <label>Uncommon Pokemon: </label><br><input type="text" ng-model="catchablePokemon.uncommon" ng-change="checkCatchablePokemon()"><br>
+            <label>Rare Pokemon: </label><br><input type="text" ng-model="catchablePokemon.rare" ng-change="checkCatchablePokemon()"><br>
+        </div>
+        <div>
+            <div>
+                <div class="catchablePokemon" ng-repeat="commonID in currentMap.pokemon.common track by $index">
+                    <img src='./assets/pics/front/{{commonID}}.png'>
+                </div>
+            </div>
+            <div>
+                <div class="catchablePokemon" ng-repeat="uncommonID in currentMap.pokemon.uncommon track by $index">
+                    <img src='./assets/pics/front/{{uncommonID}}.png'>
+                </div>
+            </div>
+            <div>
+                <div class="catchablePokemon" ng-repeat="rareID in currentMap.pokemon.rare track by $index">
+                    <img src='./assets/pics/front/{{rareID}}.png'>
+                </div>
+            </div>
         </div>
     </div>
     <div ng-if="tileColumnsReady">
@@ -109,11 +130,6 @@
                         <button ng-if="confirmMapDelete" ng-click="deleteMap()">Yes</button>
                         <button ng-if="confirmMapDelete" ng-click="toggleDelete()">No</button> 
                     </div>
-                </div>
-                <div>
-                    <label>Hex Map Color</label>
-                    <input type="text" ng-model="currentMap.mapColor">
-                    <div id="mapColor" style="width: 20px; height: 20px; border: 1px solid black; background: {{currentMap.mapColor}};"></div>
                 </div>
             </div>
         </div>

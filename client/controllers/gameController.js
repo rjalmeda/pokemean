@@ -88,7 +88,7 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
     
     
     function probeSurroundings(callback){
-//        console.log("Probing");
+        console.log("Probing");
         var playerX = wherePlayer.x/32;
         var playerY = wherePlayer.y/32;
         wherePlayer.coordinates = "" + playerX + "-" + playerY;
@@ -120,6 +120,33 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
         probed = true; 
 //        console.log(mapCoordinates);
         callback();
+    };
+    var battleTriggered = false;
+    
+    var readyEnemy = function(callback){
+        var randomNumber = Math.floor(Math.random()*100);
+        if (randomNumber < 70){
+            $scope.enemyPokemon.current = $scope.enemyPokemon.low;
+            generateRandomPokemon(commonPokemon, "low");
+        } else if (randomNumber >= 70 && randomNumber < 95){
+            $scope.enemyPokemon.current = $scope.enemyPokemon.mid;
+            generateRandomPokemon(uncommonPokemon, "mid");
+        } else if (randomNumber >= 95){
+            $scope.enemyPokemon.current = $scope.enemyPokemon.high;
+            generateRandomPokemon(rarePokemon, "high");
+        } else {
+            $scope.enemyPokemon.current = $scope.enemyPokemon.random;
+            generateRandomPokemon(randomPokemon, "random");
+        }
+    }
+    
+    var checkEncounter = function(){
+        var randomNumber = Math.random();
+        if(randomNumber < $scope.currentMap.encounterRate){
+            return true;
+        } else {
+            return false;
+        }
     };
     
     var movePlayer = function(){
@@ -226,8 +253,7 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
                 console.log("moving right on path");
                 movePath();
             }
-        }
-                        
+        };              
         
     };
     
@@ -314,10 +340,20 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
 //    $scope.items = [];
 //    $scope.item = {};
 //    $scope.item0; = "http://ecx.images-amazon.com/images/I/519SmJtgltL._SL160_.jpg";
-    $scope.enemyPokemonLow = {};
-    $scope.enemyPokemonMid = {};
-    $scope.enemyPokemonHigh = {};
+        
+    $scope.enemyPokemonsLow = {};
+    $scope.enemyPokemonsMid = {};
+    $scope.enemyPokemonsHigh = {};
     $scope.enemyPokemonRandom = {};
+        
+    $scope.enemyPokemon = {
+        low: {},
+        mid: {},
+        high: {},
+        random: {},
+        current: {}
+    };
+        
     $scope.searchItem = function(query, callback){
 //        console.log(query);
         amazonFactory.searchForItems(query, function(data){
@@ -436,56 +472,36 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
         })
     }
     
-    var generateRandomPokemon = function(firstPokeId, lastPokeId, difficulty){
+    function generateRandomPokemon(pokemonArr, difficulty){
 //        console.log("generating " + difficulty + " difficulty encounter pokemon");
         var enemyPokemon;
-        var randomRange;
-        var rangeOffset;
-        if(firstPokeId === lastPokeId){
-            enemyPokemon = generatePokemon(firstPokeId);
-        } else if (firstPokeId < lastPokeId){
-            randomRange = lastPokeId - firstPokeId;
-            rangeOffset = firstPokeId;
-            generatePokemon(Math.floor(Math.random()*randomRange+rangeOffset), function(newPokemon){
-                enemyPokemon = newPokemon;
-                if(difficulty == "low"){
-                    $scope.enemyPokemonLow = enemyPokemon;
-                } else if(difficulty == "mid"){
-                    $scope.enemyPokemonMid = enemyPokemon;
-                } else if(difficulty == "high"){
-                    $scope.enemyPokemonHigh = enemyPokemon;
-                } else if(difficulty == "random"){
-                    $scope.enemyPokemonRandom = enemyPokemon;
-                } else {
-                    return console.log("no where to put random pokemon");
-                }
-            });
-        } else {
-            randomRange = firstPokeId - lastPokeId;
-            rangeOffset = lastPokeId;
-            generatePokemon(Math.floor(Math.random()*randomRange+rangeOffset), function(newPokemon){
-                enemyPokemon = newPokemon;
-                if(difficulty == "low"){
-                    $scope.enemyPokemonLow = enemyPokemon;
-                } else if(difficulty == "mid"){
-                    $scope.enemyPokemonMid = enemyPokemon;
-                } else if(difficulty == "high"){
-                    $scope.enemyPokemonHigh = enemyPokemon;
-                } else if(difficulty == "random"){
-                    $scope.enemyPokemonRandom = enemyPokemon;
-                } else {
-                    return console.log("no where to put random pokemon");
-                }
-            });
-        }
-        
-        
+        var pokemonIdx = Math.floor(pokemonArr.length * Math.random());
+        generatePokemon(pokemonArr[pokemonIdx], function(newPokemon){
+            if(difficulty == "low"){
+                $scope.enemyPokemon.low = enemyPokemon;
+            } else if(difficulty == "mid"){
+                $scope.enemyPokemon.mid = enemyPokemon;
+            } else if(difficulty == "high"){
+                $scope.enemyPokemon.high = enemyPokemon;
+            } else if(difficulty == "random"){
+                $scope.enemyPokemon.random = enemyPokemon;
+            } else {
+                return console.log("no where to put random pokemon");
+            };
+            console.log(`Generating ${difficulty} pokemon: ` + newPokemon.name);
+            return newPokemon;
+        })
     };
     
-    generateRandomPokemon(1, 721, 'low');
-    generateRandomPokemon(200, 400, 'mid');
-    generateRandomPokemon(401, 721, 'high');
-    generateRandomPokemon(1, 721, "random");
+    var commonPokemon = [1,4,7];
+    var uncommonPokemon = [2,5,8];
+    var rarePokemon = [3,6,9,25];
+    var randomPokemon = [3,6,9,25];
+    
+    generateRandomPokemon(commonPokemon, 'low');
+    generateRandomPokemon(uncommonPokemon, 'mid');
+    generateRandomPokemon(rarePokemon, 'high');
+    generateRandomPokemon(randomPokemon, "random");
     
     // game Engine
     var pokemontype = {
@@ -896,13 +912,13 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
     $scope.attack = function(who){
         if (who === 1){
             var attacker = $scope.user.pokemons[$scope.currentPokemonIdx];
-            var defender = $scope.enemyPokemonLow;
+            var defender = $scope.enemyPokemon;
             setTimeout(function(){fightAnimate(1, 2)},500);
             attackerSound = new Audio(attacker.mp3);
             defenderSound = new Audio(defender.mp3);
         } else {
             var defender = $scope.user.pokemons[$scope.currentPokemonIdx];
-            var attacker = $scope.enemyPokemonLow;
+            var attacker = $scope.enemyPokemon;
             attackerSound = new Audio(attacker.mp3);
             defenderSound = new Audio(defender.mp3);
             setTimeout(function(){fightAnimate(2, 1)},500);

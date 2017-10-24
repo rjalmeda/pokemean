@@ -1,8 +1,45 @@
-app.controller('mapController', function ($scope, $location, mapFactory) {
+app.controller('mapController', function ($scope, $location, mapFactory, pokemonFactory) {
     $scope.printScreen = {};
     $scope.currentRegion = {
         name: "kanto"
     };
+
+    $scope.catchablePokemon = {
+        common: "",
+        uncommon: "",
+        rare: ""
+    };
+
+    $scope.checkCatchablePokemon = function(){
+        for(var key in $scope.catchablePokemon){
+            var tempArr = [];
+            var splitString = $scope.catchablePokemon[key].split(",");
+            for (var i = 0; i < splitString.length; i++){
+                var tempInt = parseInt(splitString[i]);
+                if(typeof tempInt == "number" && tempInt > 0 && tempInt < 722){
+                    tempArr.push(tempInt);
+                };
+            };
+            tempArr.sort();
+            $scope.currentMap.pokemon[key] = tempArr;
+        };
+        console.log($scope.currentMap.pokemon);
+    };
+
+    $scope.unpackCatchablePokemon = function(){
+        if($scope.currentMap.pokemon){
+            if($scope.currentMap.pokemon.common){
+                $scope.catchablePokemon.common = $scope.currentMap.pokemon.common.join(",");
+            };
+            if($scope.currentMap.pokemon.uncommon){
+                $scope.catchablePokemon.uncommon = $scope.currentMap.pokemon.uncommon.join(",");
+            };
+            if($scope.currentMap.pokemon.rare){
+                $scope.catchablePokemon.rare = $scope.currentMap.pokemon.rare.join(",");
+            };
+        };
+    };
+
     $scope.generateCSS = function () {
         console.log("generating");
         $scope.printScreen.text = "Generating new css";
@@ -327,6 +364,7 @@ app.controller('mapController', function ($scope, $location, mapFactory) {
                 $scope.currentMap = data;
                 $scope.rawMap = data.map.raw;
                 $scope.checkPathsDoors();
+                $scope.unpackCatchablePokemon();
                 $scope.clearRedo();
                 $scope.clearHistory();
                 if(callback){
