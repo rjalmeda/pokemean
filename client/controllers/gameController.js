@@ -4,13 +4,13 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
         
 //    moveplayer functions
     
-    var playerDiv = angular.element(document).find("#player");
+    var playerDiv = $(document).find("#player");
     
     var displayPlayer = function(){
         playerDiv.css("left", `${wherePlayer.x}px`);
         playerDiv.css("top", `${wherePlayer.y}px`);
     };
-    
+
     var wherePlayer = {
         movingX: false,
         movingY: false,
@@ -149,10 +149,45 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
             return false;
         }
     };
+
+    var stopPlayer = function(){
+            wherePlayer.movingX = false;
+            wherePlayer.movingY = false;
+    };
+
+    
+
+    var startBattleAnimation = function(){
+        $('#battlePartial').show('slow', function(){
+            stopPlayer();
+            console.log('start battle functions!')
+            setTimeout(function(){
+                $('.pokemon2img').show('slow', function(){
+                    $('#battleinfo2').show('fast');
+                    $('#status').prepend(`A wild ${$scope.enemyPokemon.current.name} appears! \n\n`)
+                    $('.cry2').html(`<audio autoplay><source src="assets/sounds/${$scope.enemyPokemon.current.id}.ogg"><source src="{assets/sounds/${$scope.enemyPokemon.current.id}.mp3"></audio>`);
+                })
+            }, 1500);
+            setTimeout(function(){
+                $('#status').prepend(`Go get em' ${$scope.user.pokemons[0].name}! \n`)
+                setTimeout(function(){
+                    $('#status').prepend(`${$scope.user.pokemons[0].name}! \n`)
+                    $('.pokemon1img').show('slow', function(){
+                    $('#battleinfo1').show('fast');
+                    $('.cry1').html(`<audio autoplay><source src="assets/sounds/${$scope.user.pokemons[0].id}.ogg"><source src="{assets/sounds/${$scope.user.pokemons[0].id}.mp3"></audio>`);
+                    $('.battleControls').slideDown('slow');
+                })}, 1250);
+            }, 3200);
+        });
+    }
     
     var movePlayer = function(){
         if(changingMap){
             return console.log("changing Map");
+        };
+
+        if(battleTriggered){
+            return null
         };
 //        console.log("moving");
         if(wherePlayer.movingX && !wherePlayer.movingY && wherePlayer.y%32 === 0){
@@ -242,6 +277,9 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
                     if(checkEncounter()){
                         readyEnemy(function(enemy){
                             console.log("Encounter " + enemy.name);
+                            battleTriggered = true;
+                            $scope.playSound("assets/music/music/battle(wild).mp3");
+                            startBattleAnimation();
                         })
                     }
                 }
@@ -292,6 +330,16 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
     
     $scope.mapCoordinates = "20,20";
     
+    $scope.playSound = function(soundLink){
+        var newSound = new Audio(soundLink);
+        
+        newSound.onended = function(){
+            console.log("sound file finished")
+        };
+
+        newSound.play()
+    };
+
     $scope.fetchMap = function(PD){
         mapFactory.fetchMap($scope.mapCoordinates, function(data){
             $scope.currentMap = data;
@@ -894,45 +942,45 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
             def_mot1 = '+=15px';
             def_mot2 = '-=15px';
         } else { return false }
-        angular.element('.pokemon'+atk_id+'img').animate({left: atk_mot1}, 70);
-        setTimeout(function(){angular.element('.pokemon'+atk_id+'img').animate({left: atk_mot2},100)},120);
-        angular.element('.pokemon'+def_id+'img').animate({left: def_mot1}, 20);
-        setTimeout(function(){angular.element('.pokemon'+def_id+'img').animate({left: def_mot2},20)},30);
-        setTimeout(function(){angular.element('.pokemon'+def_id+'img').animate({left: def_mot1},20)},60);
-        setTimeout(function(){angular.element('.pokemon'+def_id+'img').animate({left: def_mot2},20)},90);
+        $('.pokemon'+atk_id+'img').animate({left: atk_mot1}, 70);
+        setTimeout(function(){$('.pokemon'+atk_id+'img').animate({left: atk_mot2},100)},120);
+        $('.pokemon'+def_id+'img').animate({left: def_mot1}, 20);
+        setTimeout(function(){$('.pokemon'+def_id+'img').animate({left: def_mot2},20)},30);
+        setTimeout(function(){$('.pokemon'+def_id+'img').animate({left: def_mot1},20)},60);
+        setTimeout(function(){$('.pokemon'+def_id+'img').animate({left: def_mot2},20)},90);
     };
     
     $scope.attack = function(who){
         if (who === 1){
             var attacker = $scope.user.pokemons[$scope.currentPokemonIdx];
-            var defender = $scope.enemyPokemon;
+            var defender = $scope.enemyPokemon.current;
             setTimeout(function(){fightAnimate(1, 2)},500);
             attackerSound = new Audio(attacker.mp3);
             defenderSound = new Audio(defender.mp3);
         } else {
             var defender = $scope.user.pokemons[$scope.currentPokemonIdx];
-            var attacker = $scope.enemyPokemon;
+            var attacker = $scope.enemyPokemon.current;
             attackerSound = new Audio(attacker.mp3);
             defenderSound = new Audio(defender.mp3);
             setTimeout(function(){fightAnimate(2, 1)},500);
         }
         var multiplier = calcmultiplier(attacker, defender);
         if (multiplier == 0){
-            angular.element('#status').prepend('Attack has no effect'+'\n');
+            $('#status').prepend('Attack has no effect'+'\n');
         } else if (multiplier > 0 && multiplier < 1) {
-            angular.element('#status').prepend('Attack is not effective'+'\n');
+            $('#status').prepend('Attack is not effective'+'\n');
         } else if (multiplier > 1 && multiplier < 2) {
-            angular.element('#status').prepend('Attack is effective'+'\n')
+            $('#status').prepend('Attack is effective'+'\n')
         } else if (multiplier >= 2) {
-            angular.element('#status').prepend('Attack is super effective'+'\n')
+            $('#status').prepend('Attack is super effective'+'\n')
         } else {
-            angular.element('#status').prepend('\n')
+            $('#status').prepend('\n')
         };
         if (defender.id == undefined){
-            return (angular.element('#status').prepend(attacker.name+' already won.  Stop beating a dead pokemon. \n\n\n'));
+            return ($('#status').prepend(attacker.name+' already won.  Stop beating a dead pokemon. \n\n\n'));
         };
         if (attacker.id == undefined) {
-            return (angular.element('#status').prepend('What are you doing '+attacker.name+'?  You already lost.\n'+defender.name+' already won. \n \n'));
+            return ($('#status').prepend('What are you doing '+attacker.name+'?  You already lost.\n'+defender.name+' already won. \n \n'));
         };
         console.log(defender.def);
         var atk = Math.floor(attacker.atk*attacker.atk/defender.def*multiplier*.25*(Math.random()*.5+.5));
@@ -946,10 +994,10 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
             setTimeout(function(){missSound.play();},500);
 //            setTimeout(function(){defenderSound.play();},700);
         };
-        angular.element('#status').prepend(attacker.name+' does '+atk+' damage. \n');
-        angular.element('#status').prepend(attacker.name+' attacks '+defender.name+'\n');
+        $('#status').prepend(attacker.name+' does '+atk+' damage. \n');
+        $('#status').prepend(attacker.name+' attacks '+defender.name+'\n');
         defender.hp -= atk;
-        angular.element('#current'+2+'hp').html(defender.hp);
+        $('#current'+2+'hp').html(defender.hp);
     };
     //    Animation Functions
     var stop = false;

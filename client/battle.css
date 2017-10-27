@@ -10,7 +10,7 @@ div.battleWrapper {
     vertical-align: top;
     position: relative;
 }
-statusBar {
+div.statusBar {
     position: absolute;
 }
 div#player1_side {
@@ -62,7 +62,7 @@ div.battleControls {
     background-color:  white;
     border: 3px solid black;
     border-radius: 10px;
-    display: none;
+    /*display: none;*/
     vertical-align: top;
 }
 div.nesController {
@@ -76,6 +76,10 @@ div.nesController {
     height: 165px;
     position: relative;
 }
+button:focus {
+    outline: none;
+}
+
 button.attackA {
     position: absolute;
     top: 100px;
@@ -108,6 +112,79 @@ button.attackB:active {
     box-shadow: 1px 1px darkred;
     transform: translateY(2px);
 }
+
+button.dpadUp {
+    top: 60px;
+    left: 54px;
+    box-shadow: 2px 0px darkgrey;
+}
+
+button.dpadDown {
+    top: 110px;
+    left: 54px;
+    box-shadow: 2px 2px darkgrey;
+}
+
+button.dpadLeft {
+    top: 85px;
+    left: 29px;
+    box-shadow: 0px 2px darkgrey;
+}
+
+button.dpadRight {
+    top: 85px;
+    left: 79px;
+    box-shadow: 2px 2px darkgrey;
+}
+
+button.dpad {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: transparent;
+    border-radius: 5px;
+    
+}
+
+button.dpadUp:active {
+    box-shadow: 1px 0px darkgrey;
+    transform: translateY(2px);
+}
+
+button.dpadDown:active {
+    box-shadow: 1px 1px darkgrey;
+    transform: translateY(2px);
+}
+
+button.dpadLeft:active {
+    box-shadow: 0px 1px darkgrey;
+    transform: translateY(2px);
+}
+
+button.dpadRight:active {
+    box-shadow: 1px 1px darkgrey;
+    transform: translateY(2px);
+}
+
+button.dpadUp {
+    
+};
+
+button.dpadDown {
+    top: 140px;
+    left: 100px;
+};
+
+button.dpadLeft {
+    top: 120px;
+    left: 80px;
+};
+
+button.dpadRight {
+    top: 120px;
+    left: 120px;
+};
+
 div.pokemon1img {
     position: absolute;
     left: 50px;

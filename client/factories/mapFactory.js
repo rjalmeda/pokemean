@@ -92,5 +92,10 @@ app.factory('mapFactory', function($http){
         })
     };
     
+    factory.fetchTestID = function(callback){
+        var testID = $("#testID")
+        callback(testID);
+    }
+
     return factory;
 })

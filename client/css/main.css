@@ -5509,17 +5509,22 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   grid-template-columns: 1fr 1fr 1fr; }
 
 .innerScreenBorder {
-  width: 880px;
-  height: 560px;
+  width: 700px;
+  height: 550px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   background: #898989;
   border-radius: 15px;
-  border-bottom-right-radius: 120px;
-  padding: 30px; }
+  border-bottom-right-radius: 20px;
+  padding: 30px;
+  position: relative; }
 
 .outerScreenBorder {
   background: #BCBCBC; }
+
+select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000; }
 
 .tileSetSheet {
   display: grid;

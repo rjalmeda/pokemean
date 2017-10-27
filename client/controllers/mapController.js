@@ -1,4 +1,6 @@
 app.controller('mapController', function ($scope, $location, mapFactory, pokemonFactory) {
+    
+
     $scope.printScreen = {};
     $scope.currentRegion = {
         name: "kanto"

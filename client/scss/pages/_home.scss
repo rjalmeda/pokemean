@@ -18,15 +18,22 @@
 }
 
 .innerScreenBorder {
-    width: 880px;
-    height: 560px;
+    width: 700px;
+    height: 550px;
     box-sizing: border-box;
     background: #898989;
     border-radius: 15px;
-    border-bottom-right-radius: 120px;
+    border-bottom-right-radius: 20px;
     padding: 30px;
+    position: relative;
 }
 
+
 .outerScreenBorder {
-    background: #BCBCBC;
+    background: #BCBCBC;    
+}
+
+select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
 }
