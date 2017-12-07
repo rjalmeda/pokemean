@@ -1,6 +1,10 @@
 app.controller('gameController', function($scope, $window, $location, pokemonFactory, loginFactory, amazonFactory, mapFactory){
     
+// Controller functions
 
+    $scope.buttonPress = function(button){
+        console.log(button);
+    }
         
 //    moveplayer functions
     
@@ -171,11 +175,10 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
             setTimeout(function(){
                 $('#status').prepend(`Go get em' ${$scope.user.pokemons[0].name}! \n`)
                 setTimeout(function(){
-                    $('#status').prepend(`${$scope.user.pokemons[0].name}! \n`)
+                    // $('#status').prepend(`${$scope.user.pokemons[0].name}! \n`)
                     $('.pokemon1img').show('slow', function(){
                     $('#battleinfo1').show('fast');
                     $('.cry1').html(`<audio autoplay><source src="assets/sounds/${$scope.user.pokemons[0].id}.ogg"><source src="{assets/sounds/${$scope.user.pokemons[0].id}.mp3"></audio>`);
-                    $('.battleControls').slideDown('slow');
                 })}, 1250);
             }, 3200);
         });

@@ -15,15 +15,18 @@
     <div id="battlePartial" ng-include="battlePartialUrl"></div>
 </div>
 <div class="battleControls">
-    <div class="nesController">
-        <button class="dpadUp dpad" type="button"></button>
-        <button class="dpadDown dpad" type="button"></button>
-        <button class="dpadLeft dpad" type="button"></button>
-        <button class="dpadRight dpad" type="button"></button>
-        <button class="attackA" type="button" ng-click="attack(1)"></button>
-        <button class="attackB" type="button" ng-click="attack(1)"></button>
+    <div class="nesController" id="nesController">
+        <button class="dpadUp dpad" type="button" ng-click="buttonPress('up')"></button>
+        <button class="dpadDown dpad" type="button" ng-click="buttonPress('down')"></button>
+        <button class="dpadLeft dpad" type="button" ng-click="buttonPress('left')"></button>
+        <button class="dpadRight dpad" type="button" ng-click="buttonPress('right')"></button>
+        <button class="controllerA" type="button" ng-click="buttonPress('a')"></button>
+        <button class="controllerB" type="button" ng-click="buttonPress('b')"></button>
+        <button class="controllerSelect" type="button" ng-click="buttonPress('select')"></button>
+        <button class="controllerStart" type="button" ng-click="buttonPress('start')"></button>
     </div>
 </div>
+
 <div id="shoppingCart" ng-include="shoppingCartUrl"></div>
 <script src="maps.js"></script>
 <script src="buildings.js"></script>

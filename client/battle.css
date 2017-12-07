@@ -80,7 +80,7 @@ button:focus {
     outline: none;
 }
 
-button.attackA {
+button.controllerA {
     position: absolute;
     top: 100px;
     left: 315px;
@@ -92,11 +92,11 @@ button.attackA {
     box-shadow: 2px 2px darkred;
 }
 
-button.attackA:active {
+button.controllerA:active {
     box-shadow: 1px 1px darkred;
     transform: translateY(2px);
 }
-button.attackB {
+button.controllerB {
     position: absolute;
     top: 100px;
     left: 265px;
@@ -108,15 +108,53 @@ button.attackB {
     box-shadow: 2px 2px darkred;
 }
 
-button.attackB:active {
+button.controllerB:active {
     box-shadow: 1px 1px darkred;
     transform: translateY(2px);
 }
 
+button.controllerSelect {
+    position: absolute;
+    top: 109px;
+    left: 140px;
+    width: 33px;
+    height: 13px;
+    background: black;
+    border-radius: 15px;
+    border: 2px solid black;
+    box-shadow: 2px 2px gray;
+}
+
+button.controllerSelect:active {
+    box-shadow: 1px 1px gray;
+    transform: translateY(2px);
+}
+
+button.controllerStart {
+    position: absolute;
+    top: 109px;
+    left: 194px;
+    width: 33px;
+    height: 13px;
+    background: black;
+    border-radius: 15px;
+    border: 2px solid black;
+    box-shadow: 2px 2px gray;
+}
+
+button.controllerStart:active {
+    box-shadow: 1px 1px gray;
+    transform: translateY(2px);
+}
 button.dpadUp {
     top: 60px;
     left: 54px;
     box-shadow: 2px 0px darkgrey;
+}
+
+button.dpadUp:active {
+    box-shadow: 1px 0px darkgrey;
+    transform: translateY(2px);
 }
 
 button.dpadDown {
@@ -125,16 +163,30 @@ button.dpadDown {
     box-shadow: 2px 2px darkgrey;
 }
 
+button.dpadDown:active {
+    box-shadow: 1px 1px darkgrey;
+    transform: translateY(2px);
+}
+
 button.dpadLeft {
     top: 85px;
     left: 29px;
     box-shadow: 0px 2px darkgrey;
 }
 
+button.dpadLeft:active {
+    box-shadow: 0px 1px darkgrey;
+    transform: translateY(2px);
+}
+
 button.dpadRight {
     top: 85px;
     left: 79px;
     box-shadow: 2px 2px darkgrey;
+}
+button.dpadRight:active {
+    box-shadow: 1px 1px darkgrey;
+    transform: translateY(2px);
 }
 
 button.dpad {
@@ -146,52 +198,13 @@ button.dpad {
     
 }
 
-button.dpadUp:active {
-    box-shadow: 1px 0px darkgrey;
-    transform: translateY(2px);
-}
-
-button.dpadDown:active {
-    box-shadow: 1px 1px darkgrey;
-    transform: translateY(2px);
-}
-
-button.dpadLeft:active {
-    box-shadow: 0px 1px darkgrey;
-    transform: translateY(2px);
-}
-
-button.dpadRight:active {
-    box-shadow: 1px 1px darkgrey;
-    transform: translateY(2px);
-}
-
-button.dpadUp {
-    
-};
-
-button.dpadDown {
-    top: 140px;
-    left: 100px;
-};
-
-button.dpadLeft {
-    top: 120px;
-    left: 80px;
-};
-
-button.dpadRight {
-    top: 120px;
-    left: 120px;
-};
-
 div.pokemon1img {
     position: absolute;
     left: 50px;
     top: 190px;
     height: 300px;
     width: 240px;
-/*    border: 5px solid red;*/
+    /*border: 5px solid red;*/
     background-size: 100%;
     display: none;
 }
@@ -201,7 +214,7 @@ div.pokemon2img {
     top: 90px;
     height: 160px;
     width: 140px;
-/*    border: 2px solid blue;*/
+    /*border: 2px solid blue;*/
     background-size: 100%;
     display: none;
 }
