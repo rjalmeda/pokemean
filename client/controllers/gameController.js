@@ -31,8 +31,6 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
         }
     };
     
-    
-    
     $scope.disableControls = false;
     $scope.keypressdown = function(e){
         if (!$scope.disableControls){
@@ -92,21 +90,15 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
     
     
     function probeSurroundings(callback){
-        console.log("Probing");
         var playerX = wherePlayer.x/32;
         var playerY = wherePlayer.y/32;
         wherePlayer.coordinates = "" + playerX + "-" + playerY;
         
-//        var mapCoordinates = [];
-//        console.log("Player Coordinates: " + playerX + "," + playerY);
         for(var i = 0; i < 3; i++){
-//            var mapRow = [];
             for(var k = 0; k < 3; k++){
                 var mapX = playerX + k - 1;
                 var mapY = playerY + i - 1;
-//                mapRow.push("" + mapX + "," + mapY);
                 if(mapX < 0 || mapX > 19 || mapY < 0 || mapY > 14){
-//                    console.log("at the edge");
                     playerSurroundings[i][k] = {
                         BG: "0",
                         MG: "0",
@@ -119,10 +111,8 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
                     playerSurroundings[i][k] = $scope.currentMap.map.compiled[playerY+i-1][playerX+k-1];
                 }
             };
-//            mapCoordinates.push(mapRow);
         };
         probed = true; 
-//        console.log(mapCoordinates);
         callback();
     };
     var battleTriggered = false;
@@ -335,10 +325,6 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
     
     $scope.playSound = function(soundLink){
         var newSound = new Audio(soundLink);
-        
-        newSound.onended = function(){
-            console.log("sound file finished")
-        };
 
         newSound.play()
     };
@@ -356,12 +342,9 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
             if(!wherePlayer.lastDir){
                 wherePlayer.lastDir = $scope.currentMap.playerLocation.facing;
             };
-//            console.log(data);
             probeSurroundings(function(){
             });
             if(!animationStarted){
-                console.log(data);
-                console.log("starting animation");
                 displayPlayer();
                 startAnimating(targetFPS);
             };
@@ -381,7 +364,6 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
                     current: {}
                 };
                 for(var key in $scope.currentMap.pokemon){
-                    console.log($scope.currentMap);
                     generateRandomPokemon($scope.currentMap.pokemon[key], key)
                 };
             }
@@ -396,9 +378,7 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
     
     var checkUser = function(callback){
         loginFactory.checkUser(function(data){
-//            console.log(data);
             $scope.user = data.data.user;
-//            console.log($scope.user);
         })
         callback();
     }
@@ -417,12 +397,9 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
     };
         
     $scope.searchItem = function(query, callback){
-//        console.log(query);
         amazonFactory.searchForItems(query, function(data){
-            console.log(data);
             if (data.data.results){
                 var results = data.data.results.Items.Item;
-                console.log(results);
                 for (var h = 0; h < results.length; h++){
                     var newItem = {
                         ASIN: results[h].ASIN,
@@ -443,7 +420,6 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
                 }                
             } else if (data.data.errors){
                 var results = data.data.errors.Items.Item;
-                console.log(results);
                 for (var h = 0; h < results.length; h++){
                     var newItem = {
                         ASIN: results[h].ASIN,
@@ -487,8 +463,6 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
             if(data.cached){
                 return callback(data.data.data);
             } else {
-                console.log("Generate pokemon");
-                console.log(data);
                 var newpokemon = {};
                 newpokemon.name = data.data.name.toUpperCase();
                 newpokemon.id = data.data.id;
@@ -507,21 +481,15 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
                 newpokemon.ogg = './assets/sounds/'+newpokemon.id+'.ogg';
                 newpokemon.mp3 = './assets/sounds/'+newpokemon.id+'.mp3';
                 for (var j = 0; j<2; j++){
-//                    console.log(j);
-//                    console.log('getting move - ', j+1);
                     pokemonFactory.getMove(data.data.moves[j].move.url, function(move){
-//                        console.log(move.data);
                         newpokemon.moves.push(move.data);
                         if(newpokemon.moves.length == 2){
-//                            console.log("next step");
                             for (var k = 0; k < data.data.types.length; k++){
                                 newpokemon.types.push(data.data.types[k].type.name);
                                 if(k == data.data.types.length - 1){
-//                                    console.log("last step");
                                     pokemonFactory.getAbility(data.data.abilities[0].ability.url, function(ability){
                                         newpokemon.abilities.push(ability.data);
                                         pokemonFactory.cachePokemon(newpokemon, function(data){
-//                                            console.log("pokemon cached");
                                             return callback(newpokemon);
                                         })
                                     })
@@ -921,8 +889,6 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
             console.log(atk)
             for (var defkey in defarr){
                 var def = defarr[defkey]
-                console.log(def)
-                console.log(pokemontype[atk][def])
                 multiplier = multiplier * pokemontype[atk][def];
             }
         };
@@ -981,7 +947,6 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
         if (attacker.id == undefined) {
             return ($('#status').prepend('What are you doing '+attacker.name+'?  You already lost.\n'+defender.name+' already won. \n \n'));
         };
-        console.log(defender.def);
         var atk = Math.floor(attacker.atk*attacker.atk/defender.def*multiplier*.25*(Math.random()*.5+.5));
         if (atk > 0){
             attackerSound.play();
@@ -1017,7 +982,6 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
     };
     
     function animate() {
-//        console.log("start animation");
         requestAnimationFrame(animate);
         now = Date.now();
         elapsed = now - then;
