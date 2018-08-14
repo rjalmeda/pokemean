@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+const bluebird = require('bluebird');
+mongoose.Promise = bluebird;
 var amazon  = require('amazon-affiliate-api'),
     amazonKey = require('./amazonKey.js'),
     client  = amazon.createClient({

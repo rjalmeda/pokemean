@@ -381,6 +381,7 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
                     current: {}
                 };
                 for(var key in $scope.currentMap.pokemon){
+                    console.log($scope.currentMap);
                     generateRandomPokemon($scope.currentMap.pokemon[key], key)
                 };
             }
@@ -406,11 +407,6 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
     });
     
     $scope.showBattlePartial = false;
-    
-//    amazon product api sample query
-//    $scope.items = [];
-//    $scope.item = {};
-//    $scope.item0; = "http://ecx.images-amazon.com/images/I/519SmJtgltL._SL160_.jpg";
 
     $scope.enemyPokemon = {
         common: {},
@@ -488,11 +484,11 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
     
     var generatePokemon = function(pokeId, callback){
         pokemonFactory.getNewPokemon(pokeId, function(data){
-//            console.log(data);
             if(data.cached){
-//                console.log("found cached");
                 return callback(data.data.data);
             } else {
+                console.log("Generate pokemon");
+                console.log(data);
                 var newpokemon = {};
                 newpokemon.name = data.data.name.toUpperCase();
                 newpokemon.id = data.data.id;

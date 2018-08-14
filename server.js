@@ -9,10 +9,11 @@ app.use(bp.json());
 app.use(express.static(path.join(__dirname, '/client')));
 app.use(express.static(path.join(__dirname, '/bower_components')));
 app.use(session({
+  name: 'connect.sid',
   secret: 'timberdog',
-  resave: false,
+  resave: true,
   saveUninitialized: true,
-  cookie: { secure: false }
+  cookie: {}
 }));
 
 require('./server/config/mongoose.js');

@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+const bluebird = require('bluebird');
+mongoose.Promise = bluebird;
 var Map = mongoose.model('Map');
 var World = mongoose.model('World');
 module.exports = (function(){

@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+mongoose.plugin(schema => { schema.options.usePushEach = true });
 var PokemonSchema = mongoose.Schema({
     name: String,
     id: Number,

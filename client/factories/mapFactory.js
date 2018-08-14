@@ -1,6 +1,5 @@
 app.factory('mapFactory', function($http){
     
-//    pokeMap constructor
     function PokeMap(mapCoord){
         this.map = {
             raw: [],
@@ -26,7 +25,7 @@ app.factory('mapFactory', function($http){
         this.building = "";
         this.encounterRate = 0.10;
         this.init = function(){
-            var coordinates = this.mapCoordinates.split(',');
+            let coordinates = this.mapCoordinates.split(',');
             this.x = parseInt(coordinates[0]);
             this.y = parseInt(coordinates[1]);
             if(coordinates[2]){
@@ -76,7 +75,6 @@ app.factory('mapFactory', function($http){
     factory.fetchMap = function(mapCoord, callback){
         console.log(mapCoord);
         $http.get('/fetchMap/' + mapCoord).then(function(data){
-//            console.log(data);
             if (data.data.errors){
                 callback(data.data.errors)
             } else if (data.data.map){

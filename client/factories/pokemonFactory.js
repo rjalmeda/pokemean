@@ -1,17 +1,8 @@
 app.factory('pokemonFactory', function($http){
     var factory = {};
     
-//    old way without caching
-//    factory.getNewPokemon = function(pokeid, callback){
-//
-//        $http.get(`https://pokeapi.co/api/v2/pokemon/${pokeid}`).then(function(data){
-//
-//            callback(data);
-//        });
-//    };
-    
-    factory.getNewPokemon = function(pokeid, callback){
-        $http.get('/getNewPokemon/'+pokeid).then(function(data){
+    factory.getNewPokemon = function(pokeId, callback){
+        $http.get('/getNewPokemon/'+pokeId).then(function(data){
             callback(data.data);
         })
     };
