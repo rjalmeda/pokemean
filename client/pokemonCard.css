@@ -1,22 +1,35 @@
-/*
 div.pokemonCard {
-    width: 180px;
-    height: 300px;
+    width: 250px;
+    height: 350px;
     border: 8px solid yellow;
-    background: light-blue;
+    border-radius: 15px;
+    background: white;
     display: inline-block;
-    margin: 8px;
-    border-radius: 20px;
-    padding: 10px;
-    text-align: center;
-}
-div.pokemonCard table {
-    text-align: left;
 }
 
-div.pokemonCard .header {
-    background: white;
-    border-radius: 5px;
-    margin-left: 15px;
-    text-align: center;
-}*/
+div.pokemoncardHeader {
+    position: relative;
+    display: inline-block;
+    width: 250px;
+    height: 25px;
+}
+
+div.headerName {
+    display: inline-block;
+    width: 120px;
+    height: 20px;
+    border: 2px solid black;
+    top: 0px;
+    left: 0px;
+}
+
+div.headerLvel {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+}
+
+div.header.HP {
+    width: 20px;
+    height: 20px;
+}

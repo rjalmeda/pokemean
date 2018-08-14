@@ -20,10 +20,19 @@ app.controller('splashController', function($scope, $location, loginFactory, pok
         }
     }
     
-    function checkUser(callback){
+    function loadTestData(){
+        return {
+            "eggs" : [1, 4, 7]
+        }
+    }
+    
+    function checkUser(){
         loginFactory.checkUser(function(data){
             console.log(data);
             $scope.user = data.data.user
+            if (!$scope.user){
+                $scope.user = loadTestData();
+            }
             
             var popAllEggs = function(index){
                 var done = false;
