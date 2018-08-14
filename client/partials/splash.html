@@ -1,37 +1,30 @@
 <div class="splashContainer">
      <div class="pokemonCard" ng-repeat="pokemon in newpokemons">
-        <div class="header">
-            Lvl {{pokemon.lvl}} - {{pokemon.name}}
+        <div class="pokemoncardHeader">
+           <div class="headerName">{{pokemon.name}}</div>
+           <div class="headerLevel">Lv. {{pokemon.lvl}}</div>
+           <div class="headerHP">HP {{pokemon.hp}}</div>
         </div>
-        <div class="pokemonPic">
-            <img src='./assets/pics/front/{{pokemon.id}}.png'>
+        <div class="pokecardPicture">
+           <div class="pokemonPic">
+             <img src='./assets/pics/front/{{pokemon.id}}.png'>
+           </div>
         </div>
-        <table>
-            <tr>
-                <td>HP</td>
-                <td>{{pokemon.hp}}</td>
-            </tr>
-            <tr>
-                <td>Attack</td>
-                <td>{{pokemon.atk}}</td>
-            </tr>
-            <tr>
-                <td>Defense</td>
-                <td>{{pokemon.def}}</td>
-            </tr>
-            <tr>
-                <td>Speed</td>
-                <td>{{pokemon.spd}}</td>
-            </tr>
-            <tr>
-                <td>Special Atk</td>
-                <td>{{pokemon.spcAtk}}</td>
-            </tr>
-            <tr>
-                <td>Special Def</td>
-                <td>{{pokemon.spcDef}}</td>
-            </tr>
-        </table>
+        <div class="pokemoncardMoves">
+            <div class="pokemoncardMove" ng-repeat="move in pokemon.moves">
+                <div class="moveText">
+                    <b>{{move.name}}</b>
+                    <p>{{move.text}}</p>
+                </div>
+                <div class="movePP">
+                    {{move.pp}}
+                </div>
+            </div>
+        </div>
+        <div class="pokemoncardFooter">
+            <div class="footerAbility">{{pokemon.abilities[0].name}}</div>
+            <div class="footerAtkDef">{{pokemon.atk}}/{{pokemon.def}}</div>
+        </div>
         <audio autoplay>
           <source ng-src="{{pokemon.ogg}}">
           <source ng-src="{{pokemon.mp3}}">

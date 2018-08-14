@@ -7,11 +7,23 @@ app.controller('splashController', function($scope, $location, loginFactory, pok
     
     $scope.loadingComplete = false;
     
-    var checkUser = function(callback){
+    function getText(data){
+        if (!data.flavor_text_entries){
+            return "";
+        } else {
+            for (var i = 0; i < data.flavor_text_entries.length; i++){
+                if (data.flavor_text_entries[i].language.name == "en"){
+                    return data.flavor_text_entries[i].flavor_text;
+                }
+            }
+            return "";
+        }
+    }
+    
+    function checkUser(callback){
         loginFactory.checkUser(function(data){
             console.log(data);
             $scope.user = data.data.user
-//            console.log($scope.user);
             
             var popAllEggs = function(index){
                 var done = false;
@@ -23,7 +35,6 @@ app.controller('splashController', function($scope, $location, loginFactory, pok
                         $scope.newpokemons.push(data.data.data);
                         pokemonFactory.popEgg(data.data.data, function(data){
                             if(data.data.user.eggs.length === 0){
-//                                $location.url('/world');
                                 $scope.loadingComplete = true;
                             }
                         })
@@ -49,7 +60,7 @@ app.controller('splashController', function($scope, $location, loginFactory, pok
                             console.log(j);
                             console.log('getting move - ', j+1);
                             pokemonFactory.getMove(data.data.moves[j].move.url, function(move){
-                                console.log(move.data);
+                                move.data.text = getText(move.data);
                                 newpokemon.moves.push(move.data);
                                 if(newpokemon.moves.length == 2){
                                     console.log("next step");
@@ -58,14 +69,14 @@ app.controller('splashController', function($scope, $location, loginFactory, pok
                                         if(k == data.data.types.length - 1){
                                             console.log("last step");
                                             pokemonFactory.getAbility(data.data.abilities[0].ability.url, function(ability){
+                                                ability.data.text = getText(ability.data);
                                                 newpokemon.abilities.push(ability.data);
-                                                console.log(newpokemon);
                                                 pokemonFactory.cachePokemon(newpokemon, function(data){
                                                     console.log("pokemon cached");
+                                                    console.log(newpokemon);
                                                     $scope.newpokemons.push(newpokemon);
                                                     pokemonFactory.popEgg(newpokemon, function(data){
                                                         if(data.data.user.eggs.length === 0){
-//                                                            $location.url('/world');
                                                             $scope.loadingComplete = true;
                                                         }
                                                     })
