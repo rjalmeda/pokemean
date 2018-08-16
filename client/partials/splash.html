@@ -1,19 +1,17 @@
 <div class="splashContainer">
-     <div class="pokemonCard" ng-repeat="pokemon in newpokemons">
-        <div class="pokemoncardHeader">
-           <div class="headerName">{{pokemon.name}}</div>
-           <div class="headerLevel">Lv. {{pokemon.lvl}}</div>
-           <div class="headerHP">HP {{pokemon.hp}}</div>
-        </div>
+    <div class="pokemonCardContainer" ng-repeat="pokemon in newpokemons">
+        <div class="pokemonNameLvl">{{pokemon.name}} Lv. {{pokemon.lvl}}</div>
+        <div class="pokemonHp">HP {{pokemon.hp}}</div>
         <div class="pokecardPicture">
-           <div class="pokemonPic">
-             <img src='./assets/pics/front/{{pokemon.id}}.png'>
-           </div>
+            <img align="bottom" src='./assets/pics/front/{{pokemon.id}}.png'>
+           <div class="sky"></div>
+           <div class="horizon"></div>
+           <div class="ground"></div>
         </div>
         <div class="pokemoncardMoves">
-            <div class="pokemoncardMove" ng-repeat="move in pokemon.moves">
+            <div class="move" ng-repeat="move in pokemon.moves">
                 <div class="moveText">
-                    <b>{{move.name}}</b>
+                    <h5>{{move.name}}</h5>
                     <p>{{move.text}}</p>
                 </div>
                 <div class="movePP">
@@ -21,10 +19,8 @@
                 </div>
             </div>
         </div>
-        <div class="pokemoncardFooter">
-            <div class="footerAbility">{{pokemon.abilities[0].name}}</div>
-            <div class="footerAtkDef">{{pokemon.atk}}/{{pokemon.def}}</div>
-        </div>
+        <div class="footerAbility">{{pokemon.abilities[0].name}}</div>
+        <div class="footerAtkDef">{{pokemon.atk}}/{{pokemon.def}}</div>
         <audio autoplay>
           <source ng-src="{{pokemon.ogg}}">
           <source ng-src="{{pokemon.mp3}}">

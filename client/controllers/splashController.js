@@ -22,7 +22,7 @@ app.controller('splashController', function($scope, $location, loginFactory, pok
     
     function loadTestData(){
         return {
-            "eggs" : [1, 4, 7]
+            "eggs" : [1]
         }
     }
     
