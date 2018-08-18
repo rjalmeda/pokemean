@@ -1,31 +1,48 @@
 <div class="splashContainer">
-    <div class="pokemonCardContainer" ng-repeat="pokemon in newpokemons">
-        <div class="pokemonNameLvl">{{pokemon.name}} Lv. {{pokemon.lvl}}</div>
-        <div class="pokemonHp">HP {{pokemon.hp}}</div>
-        <div class="pokecardPicture">
-            <img align="bottom" src='./assets/pics/front/{{pokemon.id}}.png'>
-           <div class="sky"></div>
-           <div class="horizon"></div>
-           <div class="ground"></div>
-        </div>
-        <div class="pokemoncardMoves">
-            <div class="move" ng-repeat="move in pokemon.moves">
-                <div class="moveText">
-                    <h5>{{move.name | capitalize}} - </h5>
-                    <p>{{move.text}}</p>
+    <div class="pokemonCardContainer" id="cardDrag">
+        <div class="cardFlipper">
+           <div class="cardFront">
+                <div class="lvl">Lv 1</div>
+                <div class="name">Pikachu</div>
+                <div class="hp">60</div>
+                <div class="picContainer">
+                    <div class="picBox">
+                        <div class="sky"></div>
+                        <div class="ground"></div>
+                        <div class="pokemonPic"></div>
+                    </div>
                 </div>
-                <div class="movePP">
-                    {{move.pp}}
+                <div class="footerBorder"></div>
+                <div class="pokeAttrib atk">
+                    <div class="attribLogo">
+                        <i class="icon-red fa fa-hand-rock-o" aria-hidden="true"></i>
+                    </div>
+                    <div class="attribNumber">
+                        <span>10</span>
+                    </div>
+                </div>
+                <div class="pokeAttrib spd">
+                   <div class="attribLogo">
+                        <i class="icon-yellow fa fa-bolt" aria-hidden="true"></i>
+                    </div>
+                    <div class="attribNumber">
+                        <span>40</span>
+                    </div>
+                </div>
+                <div class="pokeAttrib def">
+                    <div class="attribLogo">
+                        <i class="icon-blue fa fa-shield" aria-hidden="true"></i>
+                    </div>
+                    <div class="attribNumber">
+                        <span>8</span>
+                    </div>
                 </div>
             </div>
+            <div class="cardBack">
+                fdas
+            </div>
         </div>
-        <div class="footerAbility">{{pokemon.abilities[0].name}}</div>
-        <div class="footerAtkDef">{{pokemon.atk}}/{{pokemon.def}}</div>
-        <audio autoplay>
-          <source ng-src="{{pokemon.ogg}}">
-          <source ng-src="{{pokemon.mp3}}">
-        </audio>
-    </div>  
+    </div>
 </div>
 
 <br>

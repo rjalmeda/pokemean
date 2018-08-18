@@ -1,105 +1,168 @@
-div.pokemonCardContainer {
-    border: 10px solid yellow;
+.pokemonCardContainer{
+    position: absolute;
+    perspective: 1500px;
+    top: 100px;
+    left: 100px;
+}
+
+.pokemonCardContainer, .cardFront, .cardBack{
+    width: 300px;
+    height: 300px;
+}
+
+div.cardFront {
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 20px;
+    border: 15px solid yellow;
+    backface-visibility: hidden;
+    transform: rotateY(0deg);
+    z-index: 2;
     display: grid;
-    grid-template-columns:  1fr 4fr 1fr;
-    grid-template-rows: 1fr 4fr 4fr 1fr;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    grid-gap: 0;
 }
 
-div.pokemonCard div {
-    border: 2px solid black;
-}
-
-div.pokemonNameLvl {
+div.cardFront .lvl{
+    grid-row: 1/3;
     grid-column: 1/3;
-    grid-row: 1/2;
+    border-bottom-right-radius: 60px;
+    background: yellow;
+    z-index: 2;
 }
 
-div.pokemonHp {
-    grid-column: 3/-1;
+div.cardFront .name{
+    border-bottom: 2px solid black;
     grid-row: 1/2;
-    border: 1px solid blue;
+    grid-column: 2/9;
+    padding-left: 20%;
+    background: gray;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 15px;
+    z-index: 1;
 }
 
-div.pokecardPicture {
-    grid-column:  2/3;
-    grid-row: 2/3;
-    border: 1px solid green;
+div.cardFront .hp{
+    border-bottom: 2px solid black;
+    background: red;
+    text-align: right;
+    padding-right: 5%;
+    grid-row: 1/2;
+    grid-column: 8/11;
+}
+
+div.cardFront .picContainer{
+    grid-row: 2/8;
+    grid-column: 1/-1;
+    background: #9ef442;
     display: grid;
-    grid-template-rows: 6fr 6fr 1fr 6fr;
-    grid-template-columns: auto;
-    background: transparent;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+}
+
+div.picBox{
+    background: white;
+    grid-row: 2/6;
+    grid-column: 3/9;
+    box-shadow: 0 3px 10px;
+}
+
+div.footerBorder{
+    background-image: linear-gradient(#9ef442, gray);
+    grid-column: 1/-1;
+    grid-row: 8/9;
+}
+
+div.cardBack {
+    backface-visibility: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 20px;
+    border: 15px solid yellow;
+    transform: rotateY(180deg);
+}
+
+div.pokeAttrib{
+    background: gray;
     position: relative;
 }
 
-div.pokecardPicture img{
-    grid-row: 1/5;
-    grid-column: 1/2;
+div.pokeAttrib .attribLogo{
     z-index: 1;
-    align-self: center;
-    border: 2px solid black;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    margin: 0 auto;
     position: absolute;
-    bottom: 0px;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
+    opacity: 0.3;
+    font-size: 3em;
 }
 
-div.pokecardPicture div.sky{
-    grid-row: 1/3;
-    grid-column: 1/2;
-    background-color: #89b6ff;
+div.pokeAttrib .attribLogo i{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;    
 }
 
-div.pokecardPicture div.horizon{
-    grid-row: 3/4;
-    grid-column: 1/2;
-    background: linear-gradient(#89b6ff, #42f471)
+.icon-red {
+    color: red;
 }
 
-div.pokecardPicture div.ground{
-    grid-row: 4/5;
-    grid-column: 1/2;
-    background: #42f471;
+.icon-yellow {
+    color: yellow;
 }
 
-div.pokemoncardMoves {
-    grid-column:  1/-1;
-    grid-row: 3/4;
-    border: 1px solid yellow;
+.icon-blue {
+    color: blue;
 }
 
-div.move {
-    display: grid;
-    grid-template-columns: 4fr 1fr 1fr;
+div.pokeAttrib .attribNumber{
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    text-align: center;
 }
 
-div.move div.moveText h5{
-    display: inline;
+div.pokeAttrib .attribNumber span{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    font-size: 2em;
 }
 
-div.move div.moveText p{
-    display: inline;
+div.atk{
+    grid-row: 9/11;
+    grid-column: 1/4;
 }
 
-div.move div.movePP{
-    border: 1px solid black;
-    margin-top: auto;
-    margin-bottom: auto;
-    grid-column: 3/4;
+div.spd{
+    grid-row: 9/11;
+    grid-column: 4/8;
 }
 
-div.footerAbility {
-    grid-row: 4/5;
-    grid-column: 1/3;
-    display: flex;
-    align-items: flex-end;
-    border: 1px solid red;
+div.def{
+    grid-row: 9/11;
+    grid-column: 8/-1;
 }
 
-div.footerAtkDef {
-    grid-row: 4/5;
-    grid-column: 3/-1;
-    display: flex;
-    align-items: flex-end;
+.pokemonCardContainer:hover .cardFlipper, .pokemonCardContainer.hover .cardFlipper {
+		transform: rotateY(180deg);
+}
+
+.cardFlipper {
+	transition: 0.6s;
+	transform-style: preserve-3d;
+
+	position: relative;
 }
