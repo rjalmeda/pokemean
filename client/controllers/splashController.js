@@ -37,6 +37,7 @@ app.controller('splashController', function($scope, $location, loginFactory, pok
             var popAllEggs = function(index){
                 var done = false;
                 pokemonFactory.getNewPokemon($scope.user.eggs[index], function(data){
+                    console.log("pokemon Data");
                     console.log(data);
                     if(data.cached){
                         console.log("found cached");
