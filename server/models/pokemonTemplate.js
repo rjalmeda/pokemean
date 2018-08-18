@@ -1,7 +1,6 @@
-var mongoose = require('mongoose');
-mongoose.plugin(schema => { schema.options.usePushEach = true });
-var PokemonTemplateModel = mongoose.Schema({
-    pokeId: String,
-    data: Object
-})
-mongoose.model('PokemonTemplate', PokemonTemplateModel);
+module.exports = function(mongoose){
+    mongoose.model('PokemonTemplate', mongoose.Schema({
+        pokeId: String,
+        data: Object
+    }));
+}

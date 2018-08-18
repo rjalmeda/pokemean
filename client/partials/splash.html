@@ -11,7 +11,7 @@
         <div class="pokemoncardMoves">
             <div class="move" ng-repeat="move in pokemon.moves">
                 <div class="moveText">
-                    <h5>{{move.name}}</h5>
+                    <h5>{{move.name | capitalize}} - </h5>
                     <p>{{move.text}}</p>
                 </div>
                 <div class="movePP">
