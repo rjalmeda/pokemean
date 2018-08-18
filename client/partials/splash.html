@@ -1,15 +1,17 @@
 <div class="splashContainer">
-    <div class="pokemonCardContainer" id="cardDrag">
+    <div class="pokemonCardContainer" ng-repeat="pokemon in newpokemons">
         <div class="cardFlipper">
            <div class="cardFront">
-                <div class="lvl">Lv 1</div>
-                <div class="name">Pikachu</div>
-                <div class="hp">60</div>
+                <div class="lvl">Lv {{pokemon.lvl}}</div>
+                <div class="name">{{pokemon.name}}</div>
+                <div class="hp"><i class="fa fa-heart" aria-hidden="true"></i> {{pokemon.currentHP}}</div>
                 <div class="picContainer">
                     <div class="picBox">
                         <div class="sky"></div>
                         <div class="ground"></div>
-                        <div class="pokemonPic"></div>
+                        <div class="pokemonPic">
+                            <img ng-src='./assets/pics/front/{{pokemon.id}}.png'>
+                        </div>
                     </div>
                 </div>
                 <div class="footerBorder"></div>
@@ -18,7 +20,7 @@
                         <i class="icon-red fa fa-hand-rock-o" aria-hidden="true"></i>
                     </div>
                     <div class="attribNumber">
-                        <span>10</span>
+                        <span>{{pokemon.atk}}</span>
                     </div>
                 </div>
                 <div class="pokeAttrib spd">
@@ -26,7 +28,7 @@
                         <i class="icon-yellow fa fa-bolt" aria-hidden="true"></i>
                     </div>
                     <div class="attribNumber">
-                        <span>40</span>
+                        <span>{{pokemon.spd}}</span>
                     </div>
                 </div>
                 <div class="pokeAttrib def">
@@ -34,7 +36,7 @@
                         <i class="icon-blue fa fa-shield" aria-hidden="true"></i>
                     </div>
                     <div class="attribNumber">
-                        <span>8</span>
+                        <span>{{pokemon.def}}</span>
                     </div>
                 </div>
             </div>
