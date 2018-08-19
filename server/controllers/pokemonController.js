@@ -82,7 +82,7 @@ module.exports = (function(){
             })
             
         },
-        getMove: function(req,res){
+        getMoveAbility: function(req,res){
             pokeApiRequest(req.body.url, function(data){
                 if(data.error){
                     return res.json({error: data.error})

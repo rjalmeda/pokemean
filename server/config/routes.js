@@ -27,8 +27,8 @@ module.exports = function(app){
     app.get('/getNewPokemon/:pokeId', function(req,res){
         pokemonController.getNewPokemon(req,res);
     });
-    app.post('/getMove', function(req,res){
-        pokemonController.getMove(req,res);
+    app.post('/getMoveAbility', function(req,res){
+        pokemonController.getMoveAbility(req,res);
     });
     app.post('/cachePokemon', function(req,res){
         pokemonController.cachePokemon(req,res);

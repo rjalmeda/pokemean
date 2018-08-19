@@ -49,6 +49,7 @@ app.controller('splashController', function($scope, $location, loginFactory, pok
                             }
                         })
                     } else {
+                        console.log("Fetched new pokemon");
                         var newpokemon = {};
                         newpokemon.name = data.data.name.toUpperCase();
                         newpokemon.id = data.data.id;
