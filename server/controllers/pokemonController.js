@@ -146,14 +146,11 @@ module.exports = (function () {
                 pokemon.xp = 0;
                 pokemon.ogg = `./assets/sound/${pokemon.id}.ogg`;
                 pokemon.mp3 = `./assets/sound/${pokemon.id}.mp3`;
-
-                console.log(pokemon);
+                
                 return pokemon;
             }
 
             let address = pokeApiHost + "/api/v2/pokemon/" + req.params.pokeId + '/';
-            console.log(req.params);
-            console.log("address ", address);
             pokeApiRequest(address, async function (data) {
                 if (data.error) {
                     return res.json({ error: data.error })
@@ -178,9 +175,6 @@ module.exports = (function () {
                 if (err) {
                     return res.json({ error: err })
                 } else {
-                    console.log("cached pokemon saved");
-                    console.log("pokeId: " + req.body.id);
-                    console.log(cachePokemon);
                     return res.json({ success: true, data: cachePokemon })
                 }
             })

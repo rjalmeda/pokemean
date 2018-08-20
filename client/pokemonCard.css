@@ -3,6 +3,10 @@
     margin: 1em;
 }
 
+div.flipped {
+    transform: rotateY(180deg);
+}
+
 .pokemonCardContainer, .cardFront, .cardBack{
     width: 300px;
     height: 300px;
@@ -190,10 +194,6 @@ div.cardBack .info{
 div.cardBack .info h5{
     font-size: 1.1em;
     font-style: italic;
-}
-
-.pokemonCardContainer:hover .cardFlipper, .pokemonCardContainer.hover .cardFlipper {
-		transform: rotateY(180deg);
 }
 
 .cardFlipper {

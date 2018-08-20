@@ -1,11 +1,14 @@
 app.controller('splashController', function ($scope, $location, loginFactory, pokemonFactory) {
     $scope.newpokemons = [];
+    $scope.openProgramZIndex = 0;
+    $scope.loadingComplete = false;
 
-    var pokecry = function (id) {
-
+    $scope.incrementOpenProgramZIndex = function(){
+        $scope.openProgramZIndex++;
     };
 
-    $scope.loadingComplete = false;
+    function pokecry(id) {
+    };
 
     function getText(data) {
         if (!data.flavor_text_entries) {
@@ -22,7 +25,7 @@ app.controller('splashController', function ($scope, $location, loginFactory, po
 
     function loadTestData() {
         return {
-            "eggs": [1]
+            "eggs": [1,4,7,151]
         }
     }
 
@@ -54,6 +57,15 @@ app.controller('splashController', function ($scope, $location, loginFactory, po
 
     };
     checkUser();
+
+    $('.preventScroll').on('touchmove',function(e){
+        if(!$('.scroll').has($(e.target)).length)
+            e.preventDefault();
+    });
+
+    $scope.addTouch = function(element){
+        element.addTouch();
+    }
 })
 
 app.filter('capitalize', function () {

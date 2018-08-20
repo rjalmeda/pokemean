@@ -1,67 +1,69 @@
-<div class="splashContainer">
-    <div class="pokemonCardContainer" ng-repeat="pokemon in newpokemons">
-        <div class="cardFlipper">
-          <!-- card front -->
-           <div class="cardFront">
-                <div class="lvl">Lv {{pokemon.lvl}}</div>
-                <div class="name">{{pokemon.name}}</div>
-                <div class="hp"><i class="fa fa-heart" aria-hidden="true"></i> {{pokemon.currentHP}}</div>
-                <div class="picContainer">
-                    <div class="picBox">
-                        <div class="sky"></div>
-                        <div class="ground"></div>
-                        <div class="pokemonPic">
-                            <img ng-src='./assets/pics/front/{{pokemon.id}}.png'>
+<div class="preventScroll">
+    <div class="splashContainer">
+        <div class="pokemonCardContainer" ng-repeat="pokemon in newpokemons" draggable add-touch>
+            <div class="cardFlipper" dblclickflip>
+              <!-- card front -->
+               <div class="cardFront">
+                    <div class="lvl">Lv {{pokemon.lvl}}</div>
+                    <div class="name">{{pokemon.name}}</div>
+                    <div class="hp"><i class="fa fa-heart" aria-hidden="true"></i> {{pokemon.currentHP}}</div>
+                    <div class="picContainer">
+                        <div class="picBox">
+                            <div class="sky"></div>
+                            <div class="ground"></div>
+                            <div class="pokemonPic">
+                                <img ng-src='./assets/pics/front/{{pokemon.id}}.png'>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footerBorder"></div>
+                    <div class="pokeAttrib atk">
+                        <div class="attribLogo">
+                            <i class="icon-red fa fa-hand-rock-o" aria-hidden="true"></i>
+                        </div>
+                        <div class="attribNumber">
+                            <span>{{pokemon.atk}}</span>
+                        </div>
+                    </div>
+                    <div class="pokeAttrib spd">
+                       <div class="attribLogo">
+                            <i class="icon-yellow fa fa-bolt" aria-hidden="true"></i>
+                        </div>
+                        <div class="attribNumber">
+                            <span>{{pokemon.spd}}</span>
+                        </div>
+                    </div>
+                    <div class="pokeAttrib def">
+                        <div class="attribLogo">
+                            <i class="icon-blue fa fa-shield" aria-hidden="true"></i>
+                        </div>
+                        <div class="attribNumber">
+                            <span>{{pokemon.def}}</span>
                         </div>
                     </div>
                 </div>
-                <div class="footerBorder"></div>
-                <div class="pokeAttrib atk">
-                    <div class="attribLogo">
-                        <i class="icon-red fa fa-hand-rock-o" aria-hidden="true"></i>
-                    </div>
-                    <div class="attribNumber">
-                        <span>{{pokemon.atk}}</span>
-                    </div>
-                </div>
-                <div class="pokeAttrib spd">
-                   <div class="attribLogo">
-                        <i class="icon-yellow fa fa-bolt" aria-hidden="true"></i>
-                    </div>
-                    <div class="attribNumber">
-                        <span>{{pokemon.spd}}</span>
-                    </div>
-                </div>
-                <div class="pokeAttrib def">
-                    <div class="attribLogo">
-                        <i class="icon-blue fa fa-shield" aria-hidden="true"></i>
-                    </div>
-                    <div class="attribNumber">
-                        <span>{{pokemon.def}}</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- card back -->
-            <div class="cardBack">
-                <div class="info">
-                    <h5>Moves:</h5>
-                    <div ng-repeat="move in pokemon.moves">
+                
+                <!-- card back -->
+                <div class="cardBack">
+                    <div class="info">
+                        <h5>Moves:</h5>
+                        <div ng-repeat="move in pokemon.moves">
+                            <p>
+                                <b>{{move.name | capitalize}} - </b>
+                                {{move.text}} 
+                            </p>
+                        </div>
+                        <h5>Ability:</h5>
                         <p>
-                            <b>{{move.name | capitalize}} - </b>
-                            {{move.text}} 
+                            <b>{{pokemon.abilities[0].name | capitalize}} - </b>
+                            {{pokemon.abilities[0].text}} 
                         </p>
                     </div>
-                    <h5>Ability:</h5>
-                    <p>
-                        <b>{{pokemon.abilities[0].name | capitalize}} - </b>
-                        {{pokemon.abilities[0].text}} 
-                    </p>
                 </div>
             </div>
         </div>
     </div>
+    
+    <br>
+    <a href="#/world" ng-if="loadingComplete">Continue</a> 
 </div>
-
-<br>
-<a href="#/world" ng-if="loadingComplete">Continue</a> 
