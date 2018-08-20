@@ -1,13 +1,12 @@
-var mongoose = require('mongoose');
-mongoose.plugin(schema => { schema.options.usePushEach = true });
-var ItemSchema = mongoose.Schema({
-    ASIN: {
-        type: String,
-        index: true
-    },
-    DetailPageURL: String,
-    IMGURL: String,
-    SearchIndex: String,
-    Keywords: String
-});
-mongoose.model('Item', ItemSchema);
+module.exports = function(mongoose){
+    mongoose.model('Item', mongoose.Schema({
+        ASIN: {
+            type: String,
+            index: true
+        },
+        DetailPageURL: String,
+        IMGURL: String,
+        SearchIndex: String,
+        Keywords: String
+    }));
+}

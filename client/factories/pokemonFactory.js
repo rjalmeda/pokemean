@@ -8,12 +8,12 @@ app.factory('pokemonFactory', function($http){
     };
     
     factory.getAbility = function(abilityUrl, callback){
-        $http.get(abilityUrl).then(function(data){
-            callback(data);
+        $http.post('/getMoveAbility', {url: abilityUrl}).then(function(data){
+            callback(data.data);
         })
     };
     factory.getMove = function(moveUrl, callback){
-        $http.post('/getMove', {url: moveUrl}).then(function(data){
+        $http.post('/getMoveAbility', {url: moveUrl}).then(function(data){
             callback(data.data);
         })
     };

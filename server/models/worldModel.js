@@ -1,13 +1,12 @@
-var mongoose = require('mongoose');
-mongoose.plugin(schema => { schema.options.usePushEach = true });
-var WorldSchema = mongoose.Schema({
-    region: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    worldMusic: {
-        type: String
-    } 
-},{strict: false});
-mongoose.model('World', WorldSchema);
+module.exports = function(mongoose){
+    mongoose.model('World', mongoose.Schema({
+        region: {
+            type: String,
+            required: true,
+            unique: true
+        },
+        worldMusic: {
+            type: String
+        } 
+    },{strict: false}));
+}
