@@ -995,5 +995,10 @@ app.controller('gameController', function($scope, $window, $location, pokemonFac
                 displayPlayer();
             }
         }
-    }
+    };
+    
+    $('.preventScroll').on('touchmove',function(e){
+        if(!$('.scroll').has($(e.target)).length)
+            e.preventDefault();
+    });
 })

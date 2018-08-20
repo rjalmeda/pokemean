@@ -1,33 +1,36 @@
-<div class="innerScreenBorder">
-    <div id="gameWindow" tabindex="1" ng-click="keypress($event)" ng-keyup="keypressup($event)" ng-keydown="keypressdown($event)">
-        <div class="world"></div>
-        <div id="player" class="standardTile"></div>
-        <div id="renderMap">
-            <div ng-repeat="mapTile in rawMap track by $index" class="gameTileItem" ng-click="pasteTile($index)">
-                <div class="tileBG {{mapTile.BG}}"></div>
-                <div class="tileMG {{mapTile.MG}}"></div>
-                <div class="tileMG {{mapTile.MG2}}"></div>
-                <div class="tileFG {{mapTile.FG}}"></div>
-                <div class="tileFG {{mapTile.FG2}}"></div>
+<div class="preventScroll">
+    <div class="innerScreenBorder">
+        <div id="gameWindow" tabindex="1" ng-click="keypress($event)" ng-keyup="keypressup($event)" ng-keydown="keypressdown($event)">
+            <div class="world"></div>
+            <div id="player" class="standardTile"></div>
+            <div id="renderMap">
+                <div ng-repeat="mapTile in rawMap track by $index" class="gameTileItem" ng-click="pasteTile($index)">
+                    <div class="tileBG {{mapTile.BG}}"></div>
+                    <div class="tileMG {{mapTile.MG}}"></div>
+                    <div class="tileMG {{mapTile.MG2}}"></div>
+                    <div class="tileFG {{mapTile.FG}}"></div>
+                    <div class="tileFG {{mapTile.FG2}}"></div>
+                </div>
             </div>
         </div>
+        <div id="battlePartial" ng-include="battlePartialUrl"></div>
     </div>
-    <div id="battlePartial" ng-include="battlePartialUrl"></div>
-</div>
-<div class="battleControls">
-    <div class="nesController" id="nesController">
-        <button class="dpadUp dpad" type="button" ng-click="buttonPress('up')"></button>
-        <button class="dpadDown dpad" type="button" ng-click="buttonPress('down')"></button>
-        <button class="dpadLeft dpad" type="button" ng-click="buttonPress('left')"></button>
-        <button class="dpadRight dpad" type="button" ng-click="buttonPress('right')"></button>
-        <button class="controllerA" type="button" ng-click="buttonPress('a')"></button>
-        <button class="controllerB" type="button" ng-click="buttonPress('b')"></button>
-        <button class="controllerSelect" type="button" ng-click="buttonPress('select')"></button>
-        <button class="controllerStart" type="button" ng-click="buttonPress('start')"></button>
+    <div class="battleControls">
+        <div class="nesController" id="nesController">
+            <button class="dpadUp dpad" type="button" ng-mousedown="buttonPress('up')"></button>
+            <button class="dpadDown dpad" type="button" ng-mousedown="buttonPress('down')"></button>
+            <button class="dpadLeft dpad" type="button" ng-mousedown="buttonPress('left')"></button>
+            <button class="dpadRight dpad" type="button" ng-mousedown="buttonPress('right')"></button>
+            <button class="controllerA" type="button" ng-mousedown="buttonPress('a')"></button>
+            <button class="controllerB" type="button" ng-mousedown="buttonPress('b')"></button>
+            <button class="controllerSelect" type="button" ng-mousedown="buttonPress('select')"></button>
+            <button class="controllerStart" type="button" ng-mousedown="buttonPress('start')"></button>
+        </div>
     </div>
+    
+    <div id="shoppingCart" ng-include="shoppingCartUrl"></div>
 </div>
 
-<div id="shoppingCart" ng-include="shoppingCartUrl"></div>
 <script src="maps.js"></script>
 <script src="buildings.js"></script>
 <script>
@@ -37,5 +40,6 @@
             e.preventDefault();
         }
     }, false);
+    document.addEventListener('contextmenu', event => event.preventDefault());
 </script>
 <!--<script src="world.js"></script>-->
