@@ -8,7 +8,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "export-world": "node scripts/export-world.mjs",
-    "convert-legacy-maps": "node scripts/convert-legacy-maps.mjs"
+    "build-world": "node scripts/build-world.mjs"
   },
   "private": true,
   "dependencies": {
