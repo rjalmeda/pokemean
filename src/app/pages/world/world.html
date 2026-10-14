@@ -21,8 +21,12 @@
         }
       </div>
     </div>
-    <div id="battlePartial" [style.display]="battleVisible() ? 'block' : 'none'">
-      <app-battle />
+    <div
+      id="battlePartial"
+      [class.fade-in]="battleVisible()"
+      [style.display]="battleVisible() ? 'block' : 'none'"
+    >
+      <app-battle (finished)="endBattle()" />
     </div>
   </div>
   <div class="battleControls">

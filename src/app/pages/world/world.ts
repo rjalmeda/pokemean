@@ -79,6 +79,7 @@ export class World implements AfterViewInit {
   /** Next wild Pokemon per rarity, prefetched so encounters start instantly. */
   private readonly upcoming: Partial<Record<Rarity, Pokemon>> = {};
   private lastAnimation = '';
+  private battleMusic?: HTMLAudioElement;
 
   constructor() {
     this.destroyRef.onDestroy(() => {
@@ -94,11 +95,20 @@ export class World implements AfterViewInit {
 
   // --- input ---
 
+  /** On-screen NES controller: A picks the first move, B runs from a battle. */
   protected buttonPress(button: string): void {
-    console.log(button);
+    if (!this.battleTriggered) return;
+    if (button === 'a') this.battle().chooseMove(0);
+    else if (button === 'b') this.battle().run();
   }
 
   protected keyDown(event: KeyboardEvent): void {
+    if (this.battleTriggered) {
+      // In a battle the keyboard picks moves: 1 and 2 attack, R runs.
+      if (event.key === '1' || event.key === '2') this.battle().chooseMove(Number(event.key) - 1);
+      else if (event.key.toLowerCase() === 'r') this.battle().run();
+      return;
+    }
     switch (event.key) {
       case 'ArrowLeft':
         this.player.movingX = 'left';
@@ -237,10 +247,21 @@ export class World implements AfterViewInit {
 
     console.log(`Encounter ${enemy.name}`);
     this.battleTriggered = true;
-    new Audio(BATTLE_MUSIC).play().catch(() => undefined);
+    this.battleMusic = new Audio(BATTLE_MUSIC);
+    this.battleMusic.play().catch(() => undefined);
     this.stopPlayer();
     this.battleVisible.set(true);
     this.battle().start(ally, enemy);
+  }
+
+  /** Called when the battle ends (won, lost or fled): hide it and give control back. */
+  protected endBattle(): void {
+    this.battleMusic?.pause();
+    this.battleMusic = undefined;
+    this.battleVisible.set(false);
+    this.stopPlayer();
+    this.battleTriggered = false;
+    this.gameWindow().nativeElement.focus();
   }
 
   // --- game loop ---
