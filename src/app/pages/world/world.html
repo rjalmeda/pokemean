@@ -1,0 +1,41 @@
+<div class="preventScroll">
+  <div class="innerScreenBorder">
+    <div
+      #gameWindow
+      id="gameWindow"
+      tabindex="1"
+      (keydown)="keyDown($event)"
+      (keyup)="keyUp($event)"
+    >
+      <div class="world"></div>
+      <div #player id="player" class="standardTile"></div>
+      <div id="renderMap">
+        @for (mapTile of rawMap(); track $index) {
+          <div class="gameTileItem">
+            <div [class]="'tileBG ' + mapTile.BG"></div>
+            <div [class]="'tileMG ' + mapTile.MG"></div>
+            <div [class]="'tileMG ' + mapTile.MG2"></div>
+            <div [class]="'tileFG ' + mapTile.FG"></div>
+            <div [class]="'tileFG ' + mapTile.FG2"></div>
+          </div>
+        }
+      </div>
+    </div>
+    <div id="battlePartial" [style.display]="battleVisible() ? 'block' : 'none'">
+      <app-battle />
+    </div>
+  </div>
+  <div class="battleControls">
+    <div class="nesController" id="nesController">
+      <button class="dpadUp dpad" type="button" (mousedown)="buttonPress('up')"></button>
+      <button class="dpadDown dpad" type="button" (mousedown)="buttonPress('down')"></button>
+      <button class="dpadLeft dpad" type="button" (mousedown)="buttonPress('left')"></button>
+      <button class="dpadRight dpad" type="button" (mousedown)="buttonPress('right')"></button>
+      <button class="controllerA" type="button" (mousedown)="buttonPress('a')"></button>
+      <button class="controllerB" type="button" (mousedown)="buttonPress('b')"></button>
+      <button class="controllerSelect" type="button" (mousedown)="buttonPress('select')"></button>
+      <button class="controllerStart" type="button" (mousedown)="buttonPress('start')"></button>
+    </div>
+  </div>
+
+</div>

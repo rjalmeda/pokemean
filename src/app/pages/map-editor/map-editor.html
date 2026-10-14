@@ -1,0 +1,160 @@
+@let map = currentMap();
+<div class="gridContainer mapEditor">
+  <div class="mapTools">
+    <div class="imageSplitterForm">
+      <label>Map Name: </label><input type="text" [(ngModel)]="map.name" /><br />
+      <label>Map X: </label>
+      <input type="number" [ngModel]="mapX()" (ngModelChange)="mapX.set($event); fetchMap()" /><br />
+      <label>Map Y: </label>
+      <input type="number" [ngModel]="mapY()" (ngModelChange)="mapY.set($event); fetchMap()" /><br />
+      <label>Building Name: </label>
+      <input
+        type="text"
+        [ngModel]="buildingName()"
+        (ngModelChange)="buildingName.set($event); fetchMap()"
+      /><br />
+      <label>Map Coordinates: </label>
+      <input type="text" [value]="map.mapCoordinates" disabled /><br />
+      <button type="button" (click)="saveMap()">Save Map</button>
+      <button type="button" (click)="exportMaps()">Export Maps</button>
+      <label>Import Maps: <input type="file" accept="application/json" (change)="importMaps($event)" /></label>
+      <p>{{ message() }}</p>
+    </div>
+  </div>
+
+  <div class="subControls">
+    <div class="mapEditorPlayer">
+      <label>Player X: </label><input type="number" [(ngModel)]="map.playerLocation.x" /><br />
+      <label>Player Y: </label><input type="number" [(ngModel)]="map.playerLocation.y" /><br />
+      <label>Player Facing: </label>
+      <select [(ngModel)]="map.playerLocation.facing">
+        @for (facing of playerFacingValues; track facing) {
+          <option [value]="facing">{{ facing }}</option>
+        }
+      </select>
+      <label>Encounter Rate: </label>
+      <input
+        type="number"
+        step="0.01"
+        min="0.00"
+        max="0.99"
+        placeholder="0.00"
+        [(ngModel)]="map.encounterRate"
+      />
+    </div>
+    <div>
+      @for (rarity of rarities; track rarity) {
+        <label>{{ rarity }} Pokemon: </label><br />
+        <input
+          type="text"
+          [ngModel]="catchable()[rarity]"
+          (ngModelChange)="checkCatchablePokemon(rarity, $event)"
+        /><br />
+      }
+    </div>
+    <div>
+      @for (rarity of rarities; track rarity) {
+        <div>
+          @for (id of map.pokemon[rarity]; track $index) {
+            <div class="catchablePokemon"><img [src]="'/assets/pics/front/' + id + '.png'" [alt]="'#' + id" /></div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <div>
+    <div class="tileSetSheet" [style.grid-template-columns]="'repeat(' + tileSet.columns + ', 32px)'">
+      @for (tile of tileSet.classes; track tile) {
+        <div [class]="tile + ' tileItem'" (click)="copyTile(tile)"></div>
+      }
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 32px 640px 1fr">
+    <div>
+      <div class="emptyTile"></div>
+      @for (row of rowHeaders; track row) {
+        <div class="emptyTile">{{ row }}</div>
+      }
+    </div>
+    <div id="renderMap">
+      @for (column of columnHeaders; track column) {
+        <div class="emptyTile">{{ column }}</div>
+      }
+      @for (mapTile of rawMap(); track $index) {
+        @let border = tileBorder() ? 'tileBorder ' : '';
+        <div class="tileItemEditor" (click)="pasteTile($index)">
+          <div [class]="'tileBG ' + border + mapTile.BG"></div>
+          <div [class]="'tileMG ' + border + mapTile.MG"></div>
+          <div [class]="'tileMG2 ' + border + mapTile.MG2"></div>
+          <div [class]="'tileFG ' + border + mapTile.FG"></div>
+          <div [class]="'tileFG2 ' + border + mapTile.FG2">
+            <p>
+              @if (mapTile.unpassable) { <span>U</span> }
+              @if (mapTile.door) { <span>D</span> }
+              @if (mapTile.path) { <span>P</span> }
+              @if (mapTile.encounter) { <span>E</span> }
+            </p>
+          </div>
+        </div>
+      }
+      <div class="controlContainer">
+        <div id="mapControls">
+          <button type="button" (click)="cycleLayer()">{{ layer() }}</button>
+          <button type="button" (click)="copyTile('P')">Path</button>
+          <button type="button" (click)="copyTile('U')">Unpassable</button>
+          <button type="button" (click)="copyTile('D')">Door</button>
+          <button type="button" (click)="copyTile('E')">Encounter</button>
+          <button type="button" (click)="copyTile('PL')">Player Loc.</button>
+          <button type="button" (click)="copyTile('')">Erase</button>
+          <button type="button" (click)="undoMap()">Undo</button>
+          <button type="button" (click)="redoMap()">Redo</button>
+          <button type="button" (click)="bucketMap()">Bucket</button>
+          <button type="button" (click)="toggleTileBorders()">Toggle Tile Borders</button>
+          <div>
+            @if (!confirmMapDelete()) {
+              <button type="button" (click)="confirmMapDelete.set(true)">Delete Map</button>
+            } @else {
+              <button type="button" (click)="deleteMap()">Yes</button>
+              <button type="button" (click)="confirmMapDelete.set(false)">No</button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="doorsPaths">
+      <h2 style="text-decoration: underline">Paths</h2>
+      <ul>
+        @for (path of paths(); track path.name) {
+          <li>
+            <div>
+              <h4>{{ path.name }}:</h4>
+              <label>mapSet: </label><input type="text" [(ngModel)]="path.mapSet" /><br />
+              <label>mapX: </label><input type="text" [(ngModel)]="path.mapX" /><br />
+              <label>mapY: </label><input type="text" [(ngModel)]="path.mapY" /><br />
+              <label>playerX: </label><input type="text" [(ngModel)]="path.playerX" /><br />
+              <label>playerY: </label><input type="text" [(ngModel)]="path.playerY" /><br />
+            </div>
+          </li>
+        }
+      </ul>
+      <h2 style="text-decoration: underline">Doors</h2>
+      <ul>
+        @for (door of doors(); track door.name) {
+          <li class="mapEditorDoor">
+            <div>
+              <h4>{{ door.name }}:</h4>
+              <label>mapSet: </label><input type="text" [(ngModel)]="door.mapSet" /><br />
+              <label>mapX: </label><input type="text" [(ngModel)]="door.mapX" /><br />
+              <label>mapY: </label><input type="text" [(ngModel)]="door.mapY" /><br />
+              <label>Building: </label><input type="text" [(ngModel)]="door.building" /><br />
+              <label>playerX: </label><input type="text" [(ngModel)]="door.playerX" /><br />
+              <label>playerY: </label><input type="text" [(ngModel)]="door.playerY" /><br />
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</div>

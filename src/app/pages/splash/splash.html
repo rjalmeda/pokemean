@@ -1,0 +1,15 @@
+<div class="preventScroll">
+  <div class="splashContainer">
+    @for (pokemon of newPokemons(); track $index) {
+      <app-pokemon-card [pokemon]="pokemon" />
+    }
+  </div>
+
+  <br />
+  @if (error()) {
+    <p>{{ error() }}</p>
+  }
+  @if (loadingComplete()) {
+    <a routerLink="/world">Continue</a>
+  }
+</div>

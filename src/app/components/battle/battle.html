@@ -1,0 +1,31 @@
+<div class="battleWrapper">
+  <div class="battleWindow">
+    <div #playerSprite class="pokemon1img" [style.display]="playerVisible() ? 'block' : 'none'">
+      @if (player(); as p) {
+        <img [src]="'/assets/pics/back/' + p.id + '.png'" [alt]="p.name" height="280" />
+      }
+    </div>
+    <div #enemySprite class="pokemon2img" [style.display]="enemyVisible() ? 'block' : 'none'">
+      @if (enemy(); as e) {
+        <img [src]="'/assets/pics/front/' + e.id + '.png'" [alt]="e.name" height="150" />
+      }
+    </div>
+    <div id="battleinfo1" class="battleinfo" [style.display]="playerInfoVisible() ? 'block' : 'none'">
+      <strong id="player1name">{{ player()?.name }}</strong>
+      <p>HP: <span id="current1hp">{{ playerHP() }}</span></p>
+    </div>
+    <div id="battleinfo2" class="battleinfo" [style.display]="enemyInfoVisible() ? 'block' : 'none'">
+      <strong id="player2name">{{ enemy()?.name }}</strong>
+      <p>HP: <span id="current2hp">{{ enemyHP() }}</span></p>
+    </div>
+  </div>
+  <div class="statusBar"><textarea id="status" rows="3" disabled [value]="statusText()"></textarea></div>
+</div>
+
+<!-- Re-created whenever the source changes, so the cry plays once per appearance. -->
+@if (playerCry(); as src) {
+  <audio autoplay [src]="src"></audio>
+}
+@if (enemyCry(); as src) {
+  <audio autoplay [src]="src"></audio>
+}
