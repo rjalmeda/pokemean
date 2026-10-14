@@ -13,6 +13,7 @@ import { Facing, PokeMap, Pokemon, Rarity, Tile } from '../../models';
 import { MAP_COLUMNS, MAP_ROWS, MapService, TILE_SIZE } from '../../services/map.service';
 import { PlayerService } from '../../services/player.service';
 import { PokemonService } from '../../services/pokemon.service';
+import { WorldRenderer } from './world-renderer';
 
 /** Pixels the player moves per frame. Must divide TILE_SIZE evenly. */
 const STEP = 4;
@@ -47,10 +48,9 @@ export class World implements AfterViewInit {
   private readonly destroyRef = inject(DestroyRef);
 
   private readonly gameWindow = viewChild.required<ElementRef<HTMLElement>>('gameWindow');
-  private readonly playerEl = viewChild.required<ElementRef<HTMLElement>>('player');
+  private readonly stage = viewChild.required<ElementRef<HTMLElement>>('stage');
   private readonly battle = viewChild.required(Battle);
 
-  protected readonly rawMap = signal<Tile[]>([]);
   protected readonly battleVisible = signal(false);
 
   // --- engine state (mutated every frame, so deliberately not signals) ---
@@ -78,18 +78,26 @@ export class World implements AfterViewInit {
   ];
   /** Next wild Pokemon per rarity, prefetched so encounters start instantly. */
   private readonly upcoming: Partial<Record<Rarity, Pokemon>> = {};
-  private lastAnimation = '';
+  private readonly renderer = new WorldRenderer();
+  private walking = false;
+  private facing: Facing = 'down';
   private battleMusic?: HTMLAudioElement;
 
   constructor() {
     this.destroyRef.onDestroy(() => {
       this.destroyed = true;
       cancelAnimationFrame(this.animationId);
+      this.renderer.destroy();
     });
   }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit(): Promise<void> {
     this.gameWindow().nativeElement.focus();
+    await this.renderer.init(this.stage().nativeElement);
+    if (this.destroyed) {
+      this.renderer.destroy();
+      return;
+    }
     this.loadMap();
   }
 
@@ -172,7 +180,7 @@ export class World implements AfterViewInit {
     const map = this.mapService.fetchMap(this.mapCoordinates);
 
     this.currentMap = map;
-    this.rawMap.set(map.map.raw);
+    this.renderer.setMap(map.map.raw);
     this.player.x ??= map.playerLocation.x;
     this.player.y ??= map.playerLocation.y;
     this.probeSurroundings();
@@ -281,18 +289,13 @@ export class World implements AfterViewInit {
     this.player.movingY = false;
   }
 
-  private setAnimation(animation: string): void {
-    if (animation === this.lastAnimation) return;
-    this.lastAnimation = animation;
-    this.playerEl().nativeElement.style.animation = animation;
+  private walk(direction: Facing): void {
+    this.facing = direction;
+    this.walking = true;
   }
 
-  // The player sprite moves every frame, so write to the DOM directly instead of
-  // triggering change detection 60 times a second.
   private displayPlayer(): void {
-    const style = this.playerEl().nativeElement.style;
-    style.left = `${this.player.x ?? 0}px`;
-    style.top = `${this.player.y ?? 0}px`;
+    this.renderer.draw(this.player.x ?? 0, this.player.y ?? 0, this.facing, this.walking);
   }
 
   private movePlayer(): void {
@@ -307,22 +310,22 @@ export class World implements AfterViewInit {
     if (p.movingX && !p.movingY && p.y % TILE_SIZE === 0) {
       if (p.movingX === 'left' && !left.unpassable) {
         p.x -= STEP;
-        this.setAnimation('walk-left 0.4s steps(3) infinite');
+        this.walk('left');
         this.probed = false;
       } else if (p.movingX === 'right' && !right.unpassable) {
         p.x += STEP;
-        this.setAnimation('walk-right 0.4s steps(3) infinite');
+        this.walk('right');
         this.probed = false;
       }
     }
     if (p.movingY && !p.movingX && p.x % TILE_SIZE === 0) {
       if (p.movingY === 'up' && !up.unpassable) {
         p.y -= STEP;
-        this.setAnimation('walk-up 0.4s steps(3) infinite');
+        this.walk('up');
         this.probed = false;
       } else if (p.movingY === 'down' && !down.unpassable) {
         p.y += STEP;
-        this.setAnimation('walk-down 0.4s steps(3) infinite');
+        this.walk('down');
         this.probed = false;
       }
     }
@@ -336,7 +339,8 @@ export class World implements AfterViewInit {
     }
 
     if (!p.movingX && !p.movingY && p.x % TILE_SIZE === 0 && p.y % TILE_SIZE === 0) {
-      this.setAnimation(`stand-${p.lastDir} 2.0s steps(1) infinite`);
+      this.walking = false;
+      this.facing = p.lastDir;
     }
 
     if (p.x % TILE_SIZE === 0 && p.y % TILE_SIZE === 0 && !this.probed) {

@@ -7,19 +7,7 @@
       (keydown)="keyDown($event)"
       (keyup)="keyUp($event)"
     >
-      <div class="world"></div>
-      <div #player id="player" class="standardTile"></div>
-      <div id="renderMap">
-        @for (mapTile of rawMap(); track $index) {
-          <div class="gameTileItem">
-            <div [class]="'tileBG ' + mapTile.BG"></div>
-            <div [class]="'tileMG ' + mapTile.MG"></div>
-            <div [class]="'tileMG ' + mapTile.MG2"></div>
-            <div [class]="'tileFG ' + mapTile.FG"></div>
-            <div [class]="'tileFG ' + mapTile.FG2"></div>
-          </div>
-        }
-      </div>
+      <div #stage id="stage"></div>
     </div>
     <div
       id="battlePartial"
